@@ -21,8 +21,8 @@ Aplikacja dostępna jest na różnych platformach do pobrania w [tym miejscu](ht
 
 # Materiały dodatkowe
 
-- [ggplot2: Elegant Graphics for Data Analysis](https://ggplot2-book.org/) Hadley Wickham
-- [R Graphics Cookbook](https://r-graphics.org/) Winston Chang
+- ["ggplot2: Elegant Graphics for Data Analysis"](https://ggplot2-book.org/) Hadley Wickham
+- ["R Graphics Cookbook"](https://r-graphics.org/) Winston Chang
 
 # Kontakt 
 
