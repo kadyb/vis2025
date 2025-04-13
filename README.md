@@ -19,6 +19,8 @@ Aplikacja dostępna jest na różnych platformach do pobrania w [tym miejscu](ht
 
 # Materiały do kursu
 
+1. [Przetwarzanie danych](https://kadyb.github.io/vis2025/cwiczenia/01_Przetwarzanie_danych.html)
+
 # Materiały dodatkowe
 
 - ["ggplot2: Elegant Graphics for Data Analysis"](https://ggplot2-book.org/) Hadley Wickham
