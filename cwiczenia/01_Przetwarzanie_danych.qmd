@@ -53,7 +53,7 @@ precyzyjną jak bazy danych, np. pliki XML czy JSON.
 np. dokumenty tekstowe, strony internetowe czy filmy.
 
 W języku R stosowanych jest kilka różnych uporządkowanych struktur danych
-w zależności od ich wymiarowości oraz jednolistości.
+w zależności od ich wymiarowości oraz jednolitości.
 
 | **Struktura danych** | **Liczba wymiarów** | **Jednolity typ?**  |
 |----------------------|---------------------|---------------------|
@@ -194,7 +194,10 @@ Następnie musimy go załadować do sesji używając funkcji `library()`.
 library("dplyr")
 ```
 
-Do analizy wykorzystamy wbudowany zbiór danych `mtcars`.
+Do analizy wykorzystamy wbudowany zbiór danych `mtcars`, który zawiera informacje
+o 32 różnych modelach samochodów z magazynu Motor Trend US z 1974 r. W zbiorze
+znajduje się 11 zmiennych (kolumn) związanych z osiągami i konstrukcją tych
+samochodów. Dokumentację można sprawdzić używając `?mtcars`.
 
 ```{r}
 dane = mtcars
@@ -349,20 +352,20 @@ dane |>
 
 # Zadanie
 
-W pakiecie `nycflights13` znajdziesz zbiór danych `flights`. Wykonaj następujące
-zadania:
+W pakiecie `nycflights13` znajdziesz zbiór danych `flights`. Zapoznaj się z jego
+dokumentacją i wykonaj następujące zadania używając pakietu `dplyr`:
 
 1. Wczytaj ten zbiór danych i dokonaj jego inspekcji, aby poznać strukturę,
 zmienne oraz typ danych. Sprawdź również brakujące wartości (`NA`).
-2. Dokonaj analiz opóźnienia odlotów:
-  - Oblicz całkowite średnie opóźnienie odlotów dla wszystkich lotów.
-  - Pogrupuj dane według lotniska początkowego i oblicz średnie opóźnienie
-    odlotu dla każdego z nich. Uporządkuj wyniki w kolejności malejącej według
-    opóźnienia. Które lotnisko ma największe średnie opóźnienie?
-  - Pogrupuj dane według przewoźników i oblicz średnie opóźnienie odlotu dla
-    każdego z nich. Połącz z danymi zawierającymi pełne nazwy linii lotniczych.
-    Znajdź linię lotniczą o najgorszych wynikach.
-  - Pogrupuj dane według miejsca docelowego, oblicz średnie opóźnienie przylotu
-    i wyświetl 10 miejsc z największym opóźnieniem.
-  - Pogrupuj dane według miesięcy i oblicz średnie opóźnienie odlotu. Czy istnieją
-    jakieś zauważalne wzorce sezonowe?
+2. Dokonaj analizy danych:
+    - Oblicz całkowite średnie opóźnienie odlotów dla wszystkich lotów.
+    - Pogrupuj dane według lotniska początkowego i oblicz średnie opóźnienie
+      odlotu dla każdego z nich. Uporządkuj wyniki w kolejności malejącej według
+      opóźnienia. Które lotnisko ma największe średnie opóźnienie?
+    - Pogrupuj dane według przewoźników i oblicz średnie opóźnienie odlotu dla
+      każdego z nich. Połącz z danymi zawierającymi pełne nazwy linii lotniczych.
+      Znajdź linię lotniczą o najgorszych wynikach.
+    - Pogrupuj dane według miejsca docelowego, oblicz średnie opóźnienie przylotu
+      i wyświetl 10 miejsc z największym opóźnieniem.
+    - Pogrupuj dane według miesięcy i oblicz średnie opóźnienie odlotu. Czy istnieją
+      jakieś zauważalne wzorce sezonowe?
