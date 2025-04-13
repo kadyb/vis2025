@@ -1,0 +1,368 @@
+---
+title: "Automatyzacja wizualizacji danych"
+subtitle: "Przetwarzanie danych"
+author: "Krzysztof Dyba"
+format:
+  html:
+    toc: true
+    toc-title: " "
+    embed-resources: true
+    code-links:
+      - text: Repozytorium
+        icon: github
+        href: https://github.com/kadyb/vis2025
+---
+
+# Dane
+
+**Dane** to fakty, które są gromadzone, obserwowane lub mierzone, a następnie
+wykorzystywane do analizy i podejmowania decyzji. Wyrażane są w różnych formach
+jako tekst, liczby, symbole, obrazy czy dźwięk. Dane w stanie początkowym nie
+mają kontekstu (jest to tylko zbiór pewnych faktów). Aby były użyteczne, muszą
+zostać przetworzone i zinterpretowane. Dane mogą być pozyskiwane z różnych źródeł,
+np. czujników, ankiet, pomiarów terenowych czy eksperymentów.
+
+```{mermaid}
+flowchart LR
+    A[Dane] -->|Przetwarzanie| B[Informacja]
+    B -->|Analiza| C[Wiedza]
+```
+
+Podział danych ze względu na typ:
+
+- Jakościowe -- dane kategoryczne przedstawiające cechy lub atrybuty,
+np. kolory, klasy pokrycia terenu, nazwy.
+- Ilościowe -- dane numeryczne, które można zmierzyć lub policzyć,
+np. temperatura, wysokość terenu, wiek.
+
+# Struktury danych
+
+**Struktura danych** to format organizowania, przetwarzania i przechowywania
+danych. Jest to sposób na uporządkowanie danych w pamięci komputera lub na dysku,
+tak aby można było z nich efektywnie korzystać. Różne rodzaje struktur danych
+sprawdzają się w różnych zadaniach. Wybór właściwej dla danej sytuacji jest
+kluczową częścią programowania i tworzenia efektywnych algorytmów.
+
+Podział danych ze względu na strukturę:
+
+- Ustrukturyzowane -- dane zorganizowane w ściśle określony sposób (zazwyczaj w
+formie tabeli), np. dane w relacyjnej bazie danych czy arkuszach kalkulacyjnych.
+- Częściowo ustrukturyzowane -- dane posiadające pewną strukturę, jednak nie tak
+precyzyjną jak bazy danych, np. pliki XML czy JSON.
+- Nieustrukturyzowane -- dane nie posiadające dokładnie zdefiniowanego formatu,
+np. dokumenty tekstowe, strony internetowe czy filmy.
+
+W języku R stosowanych jest kilka różnych uporządkowanych struktur danych
+w zależności od ich wymiarowości oraz jednolistości.
+
+| **Struktura danych** | **Liczba wymiarów** | **Jednolity typ?**  |
+|----------------------|---------------------|---------------------|
+| Wektor               | 1                   | Tak                 |
+| Czynnik              | 1                   | Tak                 |
+| Lista                | 1                   | Nie                 | 
+| Macierz              | 2                   | Tak                 | 
+| Ramka danych         | 2                   | Nie                 |
+| Tablica              | $n$                 | Tak                 |
+
+## Wektor
+
+**Wektor** (*vector*) -- jednowymiarowa i jednolita struktura danych zawierająca
+elementy tego samego typu danych (liczba, ciąg znaków, wartość logiczna). Do
+tworzenia wektorów służy funkcja `c()`.
+
+```{r}
+# wektor numeryczny
+v =  c(1, 3.14, -10)
+typeof(v)
+
+# wektor tekstowy
+v =  c("okno", "butelka", "Tomek")
+typeof(v)
+```
+
+## Czynnik
+
+**Czynnik** (*factor*) -- jednowymiarowa i jednolita struktura danych reprezentująca
+dane kategoryczne (np. grupy czy klasy). Kategorie mogą być uporządkowane (stopniowane)
+według określonej kolejności (np. niski < średni < wysoki). Czynniki są przechowywane
+jako liczby całkowite z odpowiednimi etykietami. Do tworzenia czynników służy funkcja
+`factor()`.
+
+```{r}
+fct = factor(c("czerwony", "zielony", "zielony", "niebieski", "czerwony"))
+```
+
+```{r}
+# liczba wszystkich elementów w wektorze
+length(fct)
+
+# liczba kategorii
+nlevels(fct)
+
+# wyświetl kategorie
+levels(fct)
+```
+
+## Lista
+
+**Lista** (*list*) -- jednowymiarowa struktura danych, która może zawierać elementy
+różnych typów danych. Jest także rekursywna, co oznacza, że może przechowywać inne
+struktury danych. Do tworzenia list służy funkcja `list()`.
+
+```{r}
+lst = list(imie = "Ania", wiek = 25, oceny = c(4, 4, 5), czy_student = TRUE)
+lst
+```
+
+## Macierz
+
+**Macierz** (*matrix*) -- dwuwymiarowa i jednolita struktura danych zawierająca
+elementy tego samego typu danych. Do tworzenia macierzy służy funkcja `matrix()`.
+
+```{r}
+mat = matrix(1:9, ncol = 3)
+mat
+```
+
+## Ramka danych
+
+**Ramka danych** (*data frame*) -- dwuwymiarowa struktura danych, w której każda
+kolumna może zawierać różne typy. Jest najpopularniejszą strukturą do reprezentacji
+danych tabelarycznych na wzór arkuszu kalkulacyjnego. Każdy wiersz reprezentuje
+pojedynczą obserwację (rekord), natomiast kolumny reprezentują zmienne (atrybuty).
+Znajomość ramek danych jest absolutnie niezbędna do przeprowadzania wszelkiego
+rodzaju analiz danych! Do tworzenia ramek danych służy funkcja `data.frame()`.
+
+```{r}
+df = data.frame(
+  imie = c("Ania", "Andrzej"), 
+  wiek = c(25, 30),
+  miasto = c("Warszawa", "Kraków")
+)
+df
+```
+
+## Tablica
+
+**Tablica** (*array*) -- wielowymiarowa i jednolita struktura danych zawierająca
+elementy tego samego typu danych. Do tworzenia tablicy służy funkcja `array()`.
+
+```{r}
+# tablica jednowymiarowa (12 elementów)
+arr = array(1:12, dim = 12)
+arr
+```
+
+```{r}
+# tablica trójwymiarowa (2x3x2)
+arr = array(1:12, dim = c(2, 3, 2))
+arr
+```
+
+# Przetwarzanie danych tabelarycznych
+
+Pakiet [dplyr](https://dplyr.tidyverse.org/) (z ekosystemu [tidyverse](https://www.tidyverse.org/))
+jest jednym z najpopularniejszych narzędzi do przetwarzania danych. Zapewnia on
+spójny i czytelny zestaw funkcji do wykonywania operacji, takich jak filtrowanie,
+wybieranie, grupowanie, zestawianie czy łączenie zbiorów danych.
+
+| **Funkcja**   | **Opis**                                 |
+|---------------|------------------------------------------|
+| `filter()`    | Filtrowanie wierszy na podstawie warunku |
+| `select()`    | Selekcja określonych kolumn              |
+| `arrange()`   | Sortowanie wierszy                       |
+| `mutate()`    | Tworzenie lub modyfikacja kolumn         |
+| `summarise()` | Obliczenie statystyk opisowych           |
+| `group_by()`  | Grupowanie danych                        |
+| `join()`      | Łączenie danych z różnych tabel          |
+
+Nie są to jednak wszystkie funkcje (pozostałe znajdziesz w [dokumentacji](https://dplyr.tidyverse.org/reference/index.html)).
+
+Rozpocznijmy od zainstalowania pakietu `dplyr`.
+
+```{r}
+#| eval: false
+
+install.packages("dplyr")
+```
+
+Następnie musimy go załadować do sesji używając funkcji `library()`.
+
+```{r}
+#| message: false
+
+library("dplyr")
+```
+
+Do analizy wykorzystamy wbudowany zbiór danych `mtcars`.
+
+```{r}
+dane = mtcars
+```
+
+## Filtrowanie
+
+Funkcja `filter()` umożliwia wybieranie wierszy na podstawie określonych warunków.
+W tym celu można użyć różnych operatorów porównawczych (`==`, `!=`, `>`, `<`,
+`>= `, `<=`) i logicznych (`&`, `|`, `!`) oraz funkcji pomocniczych (`all()`,
+`any()`, `is.na()`, `%in%`).
+
+```{r}
+#| eval: false
+
+# wybierz samochody, które mają 4 cylindry
+filter(dane, cyl == 4)
+
+# wybierz samochody, które mają 4 lub 6 cylindrów
+filter(dane, cyl %in% c(4, 6))
+
+# wybierz samochody, które mają więcej niż 100 koni mechanicznych
+filter(dane, hp > 100)
+
+# wybierz samochody spełniające dwa warunki (koniunkcja)
+filter(dane, cyl == 4 & mpg > 25)
+```
+
+## Selekcja
+
+Funkcja `select()` pozwala wybrać określone kolumny z ramki danych.
+
+```{r}
+#| eval: false
+
+# wybierz tylko dwie kolumny
+select(dane, mpg, cyl)
+
+# wybierz kolumny według zakresu
+select(dane, mpg:hp)
+
+# wykluczanie kolumn
+select(dane, -wt, -qsec)
+```
+
+Dodatkowo dostępne są również funkcje pomocnicze, które ułatwiają selekcję kolumn:
+
+- `starts_with()` -- wybiera kolumny, które zaczynają się od określonego prefiksu.
+- `ends_with()` -- wybiera kolumny, które kończą się określonym sufiksem.
+- `contains()` -- wybiera kolumny, które zawierają określony ciąg znaków.
+- `matches()` -- wybiera kolumny, które pasują do wyrażenia regularnego (*regex*).
+- `everything()` -- wybiera wszystkie pozostałe kolumny (jest to przydatne do zmiany
+kolejności kolumn w ramce danych).
+
+```{r}
+#| eval: false
+
+# wybierz kolumny, które rozpoczynają się na "d"
+select(dane, starts_with("d"))
+
+# wybierz kolumny, które kończą się na "p"
+select(dane, ends_with("p"))
+
+# wybierz kolumny, które zawierają "ar"
+select(dane, contains("ar"))
+```
+
+## Sortowanie
+
+Funkcja `arrange()` umożliwia sortowanie wierszy w kolejności rosnącej (domyślnie)
+lub malejącej na podstawie jednej lub więcej kolumn.
+
+```{r}
+#| eval: false
+
+# sortowanie rosnące
+arrange(dane, mpg)
+
+# sortowanie malejące
+arrange(dane, desc(mpg))
+```
+
+## Tworzenie lub modyfikacja
+
+Funkcja `mutate()` umożliwia dodawanie nowych kolumn lub zmianę istniejących.
+
+```{r}
+#| eval: false
+
+# obliczenie kilometrów na litr benzyny
+mutate(dane, kpl = mpg * 0.425)
+
+# obliczenie współczynnika mocy do wagi 
+mutate(dane, power_to_weight = hp / wt)
+```
+
+## Statystyki opisowe
+
+Funkcja `summarise()` umożliwia obliczanie statystyk opisowych, np. średnia,
+mediana czy liczba wystąpień.
+
+```{r}
+#| eval: false
+
+# średnia
+summarise(dane, mean_mpg = mean(mpg))
+
+# mediana
+summarise(dane, median_mpg = median(mpg))
+
+# wartości unikalne
+summarise(dane, cyl_groups = n_distinct(cyl))
+
+# wiele statystyk
+summarise(
+  dane,
+  mean_mpg = mean(mpg),
+  sd_mpg = sd(mpg),
+  min_mpg = min(mpg),
+  max_mpg = max(mpg),
+  n = n() # liczba wierszy
+)
+```
+
+## Grupowanie
+
+Funkcja `group_by()` umożliwia grupowanie danych według jednej lub więcej kolumn,
+i wykonywanie operacji w obrębie każdej grupy. Jest ona często łączona z funkcją
+`summarise()`.
+
+```{r}
+grupy = group_by(mtcars, cyl)
+summarise(grupy, 
+          mean_mpg = mean(mpg),
+          count = n())
+```
+
+## Łączenie tabel
+
+## Przetwarzanie potokowe
+
+Zastosowanie operatora przepływu sprawia, że kod jest bardziej czytelny, eliminując
+potrzebę stosowania zmiennych pośrednich i wyraźnie pokazując kolejność wykonywanych
+operacji.
+
+```{r}
+dane |>
+  filter(mpg > 25) |>
+  select(mpg, cyl, hp) |>
+  arrange(desc(mpg))
+```
+
+# Zadanie
+
+W pakiecie `nycflights13` znajdziesz zbiór danych `flights`. Wykonaj następujące
+zadania:
+
+1. Wczytaj ten zbiór danych i dokonaj jego inspekcji, aby poznać strukturę,
+zmienne oraz typ danych. Sprawdź również brakujące wartości (`NA`).
+2. Dokonaj analiz opóźnienia odlotów:
+  - Oblicz całkowite średnie opóźnienie odlotów dla wszystkich lotów.
+  - Pogrupuj dane według lotniska początkowego i oblicz średnie opóźnienie
+    odlotu dla każdego z nich. Uporządkuj wyniki w kolejności malejącej według
+    opóźnienia. Które lotnisko ma największe średnie opóźnienie?
+  - Pogrupuj dane według przewoźników i oblicz średnie opóźnienie odlotu dla
+    każdego z nich. Połącz z danymi zawierającymi pełne nazwy linii lotniczych.
+    Znajdź linię lotniczą o najgorszych wynikach.
+  - Pogrupuj dane według miejsca docelowego, oblicz średnie opóźnienie przylotu
+    i wyświetl 10 miejsc z największym opóźnieniem.
+  - Pogrupuj dane według miesięcy i oblicz średnie opóźnienie odlotu. Czy istnieją
+    jakieś zauważalne wzorce sezonowe?
