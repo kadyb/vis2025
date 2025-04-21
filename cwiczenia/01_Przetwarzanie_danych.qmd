@@ -55,14 +55,14 @@ np. dokumenty tekstowe, strony internetowe czy filmy.
 W języku R stosowanych jest kilka różnych uporządkowanych struktur danych
 w zależności od ich wymiarowości oraz jednolitości.
 
-| **Struktura danych** | **Liczba wymiarów** | **Jednolity typ?**  |
-|----------------------|---------------------|---------------------|
-| Wektor               | 1                   | Tak                 |
-| Czynnik              | 1                   | Tak                 |
-| Lista                | 1                   | Nie                 | 
-| Macierz              | 2                   | Tak                 | 
-| Ramka danych         | 2                   | Nie                 |
-| Tablica              | $n$                 | Tak                 |
+| **Struktura danych** | **Liczba wymiarów** | **Czy jednolity typ?** |
+|----------------------|---------------------|------------------------|
+| Wektor               | 1                   | Tak                    |
+| Czynnik              | 1                   | Tak                    |
+| Lista                | 1                   | Nie                    | 
+| Macierz              | 2                   | Tak                    | 
+| Ramka danych         | 2                   | Nie                    |
+| Tablica              | $n$                 | Tak                    |
 
 ## Wektor
 
@@ -200,6 +200,7 @@ znajduje się 11 zmiennych (kolumn) związanych z osiągami i konstrukcją tych
 samochodów. Dokumentację można sprawdzić używając `?mtcars`.
 
 ```{r}
+# wczytanie danych
 dane = mtcars
 ```
 
@@ -358,10 +359,20 @@ dokumentacją i wykonaj następujące zadania używając pakietu `dplyr`:
 1. Wczytaj ten zbiór danych i dokonaj jego inspekcji, aby poznać strukturę,
 zmienne oraz typ danych. Sprawdź również brakujące wartości (`NA`).
 2. Dokonaj analizy danych:
+    - Oblicz liczbę odwołanych lotów.
     - Oblicz całkowite średnie opóźnienie odlotów dla wszystkich lotów.
+    - Znajdź 10 najszybszych lotów z Nowego Jorku do Chicago (`ORD`).
+    - Zidentyfikuj loty, których rzeczywisty czas trwania był najdłuższy w stosunku
+      do ich odległości.
+    - Dodaj nową kolumnę do ramki danych reprezentującą średnią prędkość lotu.
+      Dokonaj konwersji jednostek do $km/h$.
+    - Pogrupuj dane według lotniska początkowego i oblicz całkowitą liczbę lotów
+      dla każdego z nich.
     - Pogrupuj dane według lotniska początkowego i oblicz średnie opóźnienie
       odlotu dla każdego z nich. Uporządkuj wyniki w kolejności malejącej według
       opóźnienia. Które lotnisko ma największe średnie opóźnienie?
+    - Pogrupuj dane według przewoźników i wskaż tych, którzy wykonali ponad
+      10 tysięcy lotów. Który przewoźnik wykonał najwięcej lotów?
     - Pogrupuj dane według przewoźników i oblicz średnie opóźnienie odlotu dla
       każdego z nich. Połącz z danymi zawierającymi pełne nazwy linii lotniczych.
       Znajdź linię lotniczą o najgorszych wynikach.
@@ -369,3 +380,6 @@ zmienne oraz typ danych. Sprawdź również brakujące wartości (`NA`).
       i wyświetl 10 miejsc z największym opóźnieniem.
     - Pogrupuj dane według miesięcy i oblicz średnie opóźnienie odlotu. Czy istnieją
       jakieś zauważalne wzorce sezonowe?
+3. Samodzielnie sformułuj pytanie badawcze, na które udzielisz odpowiedzi
+wykorzystując niniejszy zbiór danych. Przykładowo pytanie może dotyczyć wpływu
+warunków atmosferycznych na opóźnienia lub zmienności lotów w ujęciu czasowym.

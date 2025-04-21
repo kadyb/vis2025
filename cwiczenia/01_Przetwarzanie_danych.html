@@ -5226,7 +5226,7 @@ window.Quarto = {
 <tr class="header">
 <th><strong>Struktura danych</strong></th>
 <th><strong>Liczba wymiarów</strong></th>
-<th><strong>Jednolity typ?</strong></th>
+<th><strong>Czy jednolity typ?</strong></th>
 </tr>
 </thead>
 <tbody>
@@ -5439,7 +5439,8 @@ $czy_student
 </div>
 <p>Do analizy wykorzystamy wbudowany zbiór danych <code>mtcars</code>, który zawiera informacje o 32 różnych modelach samochodów z magazynu Motor Trend US z 1974 r. W zbiorze znajduje się 11 zmiennych (kolumn) związanych z osiągami i konstrukcją tych samochodów. Dokumentację można sprawdzić używając <code>?mtcars</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>dane <span class="ot">=</span> mtcars</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># wczytanie danych</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>dane <span class="ot">=</span> mtcars</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="filtrowanie" class="level2">
 <h2 class="anchored" data-anchor-id="filtrowanie">Filtrowanie</h2>
@@ -5584,12 +5585,19 @@ Porsche 914-2  26.0   4  91</code></pre>
 <li>Wczytaj ten zbiór danych i dokonaj jego inspekcji, aby poznać strukturę, zmienne oraz typ danych. Sprawdź również brakujące wartości (<code>NA</code>).</li>
 <li>Dokonaj analizy danych:
 <ul>
+<li>Oblicz liczbę odwołanych lotów.</li>
 <li>Oblicz całkowite średnie opóźnienie odlotów dla wszystkich lotów.</li>
+<li>Znajdź 10 najszybszych lotów z Nowego Jorku do Chicago (<code>ORD</code>).</li>
+<li>Zidentyfikuj loty, których rzeczywisty czas trwania był najdłuższy w stosunku do ich odległości.</li>
+<li>Dodaj nową kolumnę do ramki danych reprezentującą średnią prędkość lotu. Dokonaj konwersji jednostek do <span class="math inline">\(km/h\)</span>.</li>
+<li>Pogrupuj dane według lotniska początkowego i oblicz całkowitą liczbę lotów dla każdego z nich.</li>
 <li>Pogrupuj dane według lotniska początkowego i oblicz średnie opóźnienie odlotu dla każdego z nich. Uporządkuj wyniki w kolejności malejącej według opóźnienia. Które lotnisko ma największe średnie opóźnienie?</li>
+<li>Pogrupuj dane według przewoźników i wskaż tych, którzy wykonali ponad 10 tysięcy lotów. Który przewoźnik wykonał najwięcej lotów?</li>
 <li>Pogrupuj dane według przewoźników i oblicz średnie opóźnienie odlotu dla każdego z nich. Połącz z danymi zawierającymi pełne nazwy linii lotniczych. Znajdź linię lotniczą o najgorszych wynikach.</li>
 <li>Pogrupuj dane według miejsca docelowego, oblicz średnie opóźnienie przylotu i wyświetl 10 miejsc z największym opóźnieniem.</li>
 <li>Pogrupuj dane według miesięcy i oblicz średnie opóźnienie odlotu. Czy istnieją jakieś zauważalne wzorce sezonowe?</li>
 </ul></li>
+<li>Samodzielnie sformułuj pytanie badawcze, na które udzielisz odpowiedzi wykorzystując niniejszy zbiór danych. Przykładowo pytanie może dotyczyć wpływu warunków atmosferycznych na opóźnienia lub zmienności lotów w ujęciu czasowym.</li>
 </ol>
 </section>
 
