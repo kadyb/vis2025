@@ -1,0 +1,102 @@
+---
+title: "Automatyzacja wizualizacji danych"
+subtitle: "Integracja danych"
+author: "Krzysztof Dyba"
+format:
+  html:
+    toc: true
+    toc-title: " "
+    embed-resources: true
+    code-links:
+      - text: Repozytorium
+        icon: github
+        href: https://github.com/kadyb/vis2025
+---
+
+# Wprowadzenie
+
+**Integracja danych** to proces łączenia danych z różnych źródeł, systemów lub
+formatów do ujednoliconego i spójnego zbioru w celu wsparcia analiz, raportowania
+i podejmowania decyzji. Obejmuje on gromadzenie, przekształcanie i agregowanie
+danych z wielu źródeł takich jak pliki, bazy danych, platformy w chmurze czy
+interfejsy programistyczne.
+
+Analiza danych z różnych źródeł jest wymagającym zadaniem z uwagi na różne
+struktury i schematy przechowywania danych, w związku z czym ich formaty mogą
+być odmienne w zależności od systemu. Ponadto, same dane mogą posiadać
+zróżnicowany poziom jakości oraz dokładności. Z tych względów, głównym celem
+integracji jest zapewnienie pojedynczego i scentralizowanego dostępu do danych
+dla użytkowników oraz ich spójności poprzez czyszczenie i standaryzację do
+jednego określonego schematu.
+
+# Formaty plików
+
+Format pliku określa sposób kodowania i organizacji danych w pliku, dzięki
+czemu można je przechowywać na dysku i uzyskiwać do nich dostęp za pomocą
+aplikacji. W szczególności, definiuje strukturę uwzględniając układ pliku,
+typy danych oraz metadane, a także zasady zapisu i odczytu danych. Format
+zazwyczaj powiązany jest z konkretnym rozszerzeniem pliku, np. `.txt`, `.xlsx`,
+`.jpg`. Co najważniejsze, formaty plików odgrywają kluczową rolę w udostępnianiu
+i interoperacyjności między systemami zapewniając, że zapisane dane będą mogły
+zostać wykorzystane przez różne aplikacje.
+
+**Formaty danych ustrukturyzowanych:**
+
+- CSV (*Comma-Separated Values*) -- format tekstowy, w którym każda linia jest
+rekordem danych, a każdy rekord składa się z jednego lub więcej atrybutów
+oddzielonymi przecinkami (może to być także inny separator, np. spacja czy średnik).
+Nie ma możliwości przechowywania typów danych oraz metadanych.
+- XLSX (*Excel Spreadsheet*) / ODS (*OpenDocument Spreadsheet*) -- format oparty
+na języku znaczników XML służący do przechowywania danych tabelarycznych w
+arkuszach kalkulacyjnych. W porównaniu do formatu CSV umożliwia obsługę
+formuł, wykresów, formatowania i wielu arkuszy w jednym pliku.
+- Relacyjne bazy danych -- formaty dedykowane relacyjnym bazom danych, często
+używane do eksportowania lub tworzenia kopii zapasowych zawartości bazy danych.
+Pozwalają zachować strukturę bazy danych, relacje i ograniczenia. Przykładowymi
+plikami (zrzutami) mogą być `.sql`, `.db` czy `.sqlite`.
+- Parquet -- binarny format zoptymalizowany pod kątem przetwarzania i
+analizy dużych zbiorów danych (np. Apache Hadoop i Apache Spark) posiadający
+wysoką kompresję. Cechą wyróżniającą jest przechowywanie danych według kolumn,
+a nie wierszy. Z racji, iż jest to format binarny, to nie można go odczytać
+w prosty sposób.
+
+**Formaty danych częściowo ustrukturyzowanych:**
+
+- JSON (*JavaScript Object Notation*) -- format tekstowy służący do przechowywania
+danych jako par klucz-wartość lub obiektów (w tym zagnieżdżonych). Jest szeroko
+stosowany w tworzeniu stron i aplikacji internetowych. W systemach informacji
+geograficznej popularny jest format GeoJSON to przechowywania danych przestrzennych.
+- XML (*eXtensible Markup Language*) -- format tekstowy oparty o język znaczników,
+który zawiera zestaw reguł kodowania dokumentów w formacie czytelnym zarówno
+dla człowieka, jak i dla komputera. Obsługuje złożone struktury hierarchiczne oraz
+umożliwia stosowanie metadanych i schematów XSD w celu ścisłego definiowania
+typów i struktury danych. Często jest bardziej rozwlekły niż JSON, przez co
+trudniejszy do odczytania przez człowieka.
+
+**Formaty danych nieustrukturyzowanych:**
+
+- Pliki tekstowe (np. TXT, DOCX, PDF) -- format służący do przechowywania danych
+tekstowych bez określonej struktury. Przykładowo mogą być to jakieś notatki
+czy wiadomości.
+- Pliki multimedialne (np. JPEG, WMV, MP3) -- formaty umożliwiające przechowywanie
+obrazów, filmów i muzyki z uwzględnieniem kompresji stratnej lub bezstratnej.
+
+# Zadanie
+
+1. W katalogu `dane` znajdziesz legendę do Copernicus Global Land Cover zapisaną
+w różnych formatach.
+
+    - Wczytaj kategorie klas pokrycia terenu z pliku `legenda.aux.xml` jako ramkę
+      danych i dodaj kolumnę z ID kategorii. Numeracja kategorii rozpoczyna się od 0.
+    - Wczytaj ID, kolory oraz kategorie z następujących plików jako ramki danych:
+
+      - `legenda.clr` (tabela kolorów zapisana jako tekst; pierwsza kolumna to ID,
+        kolejne kolumny reprezentują kolory RGBA, ostatnia kolumna zawiera nazwę
+        kategorii),
+      - `legenda.qml` (styl warstwy QGIS oparty o XML),
+      - `legenda.sld` (*Styled Layer Descriptor* oparty o XML).
+
+    Do wczytania plików XML można wykorzystać pakiet `xml2`.
+
+2. Dokonaj konwersji formatu danych punktowych pliku `miasta.csv` do GeoJSON używając
+narzędzia [ogr2ogr](https://gdal.org/en/stable/programs/ogr2ogr.html) z GDAL.
