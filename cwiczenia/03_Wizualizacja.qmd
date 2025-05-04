@@ -94,6 +94,17 @@ kolejna składowa wykresu dodawana jest w nowej linii zaczynającej się od `+`.
 
 # Rodzaje wykresów
 
+| Rodzaj wykresu        | Funkcja                 |
+|-----------------------|-------------------------|
+| Wykres rozrzutu       | `geom_point()`          |
+| Wykres liniowy        | `geom_line()`           |
+| Wykres słupkowy       | `geom_bar()`            |
+| Wykres pudełkowy      | `geom_boxplot()`        |
+| Histogram             | `geom_histogram()`      |
+| Wykres gęstości       | `geom_density()`        |
+
+Listę wszystkich dostępnych typów wykresów znajdziesz w [dokumentacji](https://ggplot2.tidyverse.org/reference/index.html#geoms).
+
 ## Wykres rozrzutu
 
 Wykres rozrzutu przedstawia związek między dwiema zmiennymi ciągłymi. Każdy punkt
@@ -143,11 +154,11 @@ pomocą prostokątnych słupków. Wysokość lub długość słupków jest propo
 do wartości, które reprezentują.
 
 ```{r}
-l = c("Przeciętna", "Dobra", "Bardzo dobra", "Premium", "Idealna")
+cut_labels = c("Przeciętna", "Dobra", "Bardzo dobra", "Premium", "Idealna")
 
 ggplot(diamonds, aes(x = cut)) +
   geom_bar() +
-  scale_x_discrete(labels = l) +
+  scale_x_discrete(labels = cut_labels) +
   labs(x = "Jakość diamentu", y = "Liczba diamentów")
 ```
 
@@ -178,7 +189,7 @@ wartości odstających.
 ```{r}
 ggplot(diamonds, aes(x = cut, y = price)) +
   geom_boxplot() +
-  scale_x_discrete(labels = l) +
+  scale_x_discrete(labels = cut_labels) +
   labs(title = "Cena diamentu w zależności od jego jakości",
        x = "Jakość diamentu", y = "Cena [USD]")
 ```
@@ -218,7 +229,7 @@ ggplot(diamonds, aes(x = price)) +
 
 # Ustawienia wykresów
 
-## Modyfikacja estetyki
+## Modyfikacja
 
 ## Zapisywanie
 

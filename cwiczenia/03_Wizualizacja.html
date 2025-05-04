@@ -3236,7 +3236,7 @@ window.Quarto = {
   </ul></li>
   <li><a href="#ustawienia-wykresów" id="toc-ustawienia-wykresów" class="nav-link" data-scroll-target="#ustawienia-wykresów">Ustawienia wykresów</a>
   <ul class="collapse">
-  <li><a href="#modyfikacja-estetyki" id="toc-modyfikacja-estetyki" class="nav-link" data-scroll-target="#modyfikacja-estetyki">Modyfikacja estetyki</a></li>
+  <li><a href="#modyfikacja" id="toc-modyfikacja" class="nav-link" data-scroll-target="#modyfikacja">Modyfikacja</a></li>
   <li><a href="#zapisywanie" id="toc-zapisywanie" class="nav-link" data-scroll-target="#zapisywanie">Zapisywanie</a></li>
   </ul></li>
   <li><a href="#zadanie" id="toc-zadanie" class="nav-link" data-scroll-target="#zadanie">Zadanie</a></li>
@@ -3313,6 +3313,41 @@ window.Quarto = {
 </section>
 <section id="rodzaje-wykresów" class="level1">
 <h1>Rodzaje wykresów</h1>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Rodzaj wykresu</th>
+<th>Funkcja</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Wykres rozrzutu</td>
+<td><code>geom_point()</code></td>
+</tr>
+<tr class="even">
+<td>Wykres liniowy</td>
+<td><code>geom_line()</code></td>
+</tr>
+<tr class="odd">
+<td>Wykres słupkowy</td>
+<td><code>geom_bar()</code></td>
+</tr>
+<tr class="even">
+<td>Wykres pudełkowy</td>
+<td><code>geom_boxplot()</code></td>
+</tr>
+<tr class="odd">
+<td>Histogram</td>
+<td><code>geom_histogram()</code></td>
+</tr>
+<tr class="even">
+<td>Wykres gęstości</td>
+<td><code>geom_density()</code></td>
+</tr>
+</tbody>
+</table>
+<p>Listę wszystkich dostępnych typów wykresów znajdziesz w <a href="https://ggplot2.tidyverse.org/reference/index.html#geoms">dokumentacji</a>.</p>
 <section id="wykres-rozrzutu" class="level2">
 <h2 class="anchored" data-anchor-id="wykres-rozrzutu">Wykres rozrzutu</h2>
 <p>Wykres rozrzutu przedstawia związek między dwiema zmiennymi ciągłymi. Każdy punkt na wykresie przedstawia pojedynczą obserwację, przy czym oś X reprezentuje zmienną niezależną (wyjaśniającą), a oś Y zmienną zależną (modelowaną). Podstawowym zastosowaniem jest wizualne zbadanie potencjalnego związku (korelacji) między dwiema zmiennymi.</p>
@@ -3358,11 +3393,11 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="wykres-słupkowy">Wykres słupkowy</h2>
 <p>Wykres słupkowy służy do wizualnego przedstawiania danych kategorycznych za pomocą prostokątnych słupków. Wysokość lub długość słupków jest proporcjonalna do wartości, które reprezentują.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>l <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;Przeciętna&quot;</span>, <span class="st">&quot;Dobra&quot;</span>, <span class="st">&quot;Bardzo dobra&quot;</span>, <span class="st">&quot;Premium&quot;</span>, <span class="st">&quot;Idealna&quot;</span>)</span>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>cut_labels <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;Przeciętna&quot;</span>, <span class="st">&quot;Dobra&quot;</span>, <span class="st">&quot;Bardzo dobra&quot;</span>, <span class="st">&quot;Premium&quot;</span>, <span class="st">&quot;Idealna&quot;</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(diamonds, <span class="fu">aes</span>(<span class="at">x =</span> cut)) <span class="sc">+</span></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels =</span> l) <span class="sc">+</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels =</span> cut_labels) <span class="sc">+</span></span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Jakość diamentu&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Liczba diamentów&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
@@ -3388,7 +3423,7 @@ window.Quarto = {
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(diamonds, <span class="fu">aes</span>(<span class="at">x =</span> cut, <span class="at">y =</span> price)) <span class="sc">+</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels =</span> l) <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels =</span> cut_labels) <span class="sc">+</span></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Cena diamentu w zależności od jego jakości&quot;</span>,</span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Jakość diamentu&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Cena [USD]&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -3436,8 +3471,8 @@ window.Quarto = {
 </section>
 <section id="ustawienia-wykresów" class="level1">
 <h1>Ustawienia wykresów</h1>
-<section id="modyfikacja-estetyki" class="level2">
-<h2 class="anchored" data-anchor-id="modyfikacja-estetyki">Modyfikacja estetyki</h2>
+<section id="modyfikacja" class="level2">
+<h2 class="anchored" data-anchor-id="modyfikacja">Modyfikacja</h2>
 </section>
 <section id="zapisywanie" class="level2">
 <h2 class="anchored" data-anchor-id="zapisywanie">Zapisywanie</h2>
