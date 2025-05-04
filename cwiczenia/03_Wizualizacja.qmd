@@ -1,0 +1,233 @@
+---
+title: "Automatyzacja wizualizacji danych"
+subtitle: "Wizualizacja danych nieprzestrzennych"
+author: "Krzysztof Dyba"
+format:
+  html:
+    toc: true
+    toc-title: " "
+    embed-resources: true
+    code-links:
+      - text: Repozytorium
+        icon: github
+        href: https://github.com/kadyb/vis2025
+---
+
+```{r}
+#| message: false
+
+library("ggplot2")
+library("dplyr")
+```
+
+# Wprowadzenie
+
+**Wizualizacja danych** to graficzna reprezentacja danych i informacji w celu
+identyfikacji wzorców, trendów i relacji ukrytych w zbiorach danych w zrozumiały
+i czytelny sposób. Podejście graficzne przede wszystkim ułatwia odbiorcom analizę
+danych i wyciągnięcie wniosków bez konieczności interpretowania ogromnych i
+złożonych zbiorów danych w postaci liczbowej. Ta efektywność wynika z faktu, iż
+ludzie zazwyczaj szybciej przetwarzają i przyswajają informacje w formie graficznej
+niż tekstowej.
+
+Pakiet [ggplot2](https://ggplot2.tidyverse.org/) jest rozbudowanym systemem do
+tworzenia wizualizacji opartym o "gramatykę grafiki" ([*grammar of graphics*](https://doi.org/10.1007/0-387-28695-0))
+umożliwiającym generowanie estetycznych i konfigurowalnych wykresów przy użyciu
+reprodukowalnego kodu. Głównym założeniem jest wykorzystywanie pomniejszych
+składowych komponentów, które finalnie tworzą cały wykres. Takie podejście pozwala
+konstruować grafiki warstwa po warstwie, co zapewnia precyzyjną kontrolę nad każdym
+elementem wizualnym. Z tego powodu ten pakiet jest jednym z najpopularniejszych
+narzędzi stosowanym w dziedzinie analizy danych i raportowania oraz tworzenia
+profesjonalnych rycin w publikacjach naukowych.
+
+**Podstawowe komponenty wykresu:**
+
+- **dane** -- zbiór danych zapisany jako ramka danych w długiej formie (nie szerokiej).
+- **estetyka** (`aes()`) -- sposób odniesienia zmiennych w danych do właściwości
+wizualnych, np. oś X, oś Y, kolor, rozmiar, kształt.
+- **geometrie** (`geom_*()`) -- obiekty geometryczne użyte do reprezentacji danych,
+np. punkty, linie, słupki.
+- skale (`scale_*()`) -- sposób, w jaki wartości danych są konwertowane na pozycje
+na osi lub zakres kolorów.
+- aspekty (`facet_*()`) -- podział wykresu na mniejsze panele na podstawie zmiennej
+kategorialnej lub podzbiorów.
+- transformacje statystyczne (`stat_*()`) -- obliczenia statystyczne, np.
+zliczanie wystąpień, wyznaczanie interwałów czy wygładzanie linii trendu.
+- elementy graficzne (`theme()`) -- elementy niebędące danymi związane ze
+stylizacją wykresu, np. etykiety osi, kolor tła, linie siatki, czcionka.
+
+# Tworzenie wykresów
+
+Na potrzeby wprowadzenia wykorzystamy zbiór danych `diamonds` z pakietu `ggplot2`
+zawierający ceny diamentów w powiązaniu z ich atrybutami takimi jak waga i jakość.
+
+Niezbędnym krokiem do stworzenia wykresu jest użycie funkcji `ggplot()` oraz
+zdefiniowanie danych wejściowych, estetyki oraz geometrii. Dane muszą być w
+formacie ramki danych, w której zmienne znajdują się w kolumnach, a obserwacje
+w wierszach. Zbiór `diamonds` spełnia te założenia. Funkcja `aes()` służy do
+określenia w jaki sposób zmienne będą mapowane na właściwości wizualne. Można
+określić je bezpośrednio dla całego wykresu lub oddzielnie dla poszczególnych
+warstw geometrycznych. Ostatni konieczny element to geometria wykresu, która
+określa w jaki sposób dane zostaną wyświetlone.
+
+Podstawowy szablon funkcji do stworzenia wykresu wygląda następująco:
+
+```
+ggplot(data = <DANE>, aes(x = <ZMIENNA_X>, y = <ZMIENNA_Y>)) +
+  <GEOMETRIA>
+```
+
+Zacznijmy od stworzenia prostego wykresu, który pokaże zależność ceny diamentu
+od jego wagi w postaci punktowej (`geom_point()`).
+
+```{r}
+ggplot(data = diamonds, aes(x = carat, y = price)) +
+  geom_point()
+```
+
+Powyżej, w pierwszej linii kodu, zdefiniowaliśmy zbiór danych, zmienną na osi
+X oraz zmienną na osi Y. Natomiast w drugiej linii, określiliśmy geometrię
+punktową do wizualnej reprezentacji tych danych. Zauważ, że te dwie linie
+kodu połączone są za pomocą operatora `+`, który umożliwia dodawanie warstw
+i innych komponentów (np. skal czy motywów) do istniejącego wykresu. Każda
+kolejna składowa wykresu dodawana jest w nowej linii zaczynającej się od `+`.
+
+# Rodzaje wykresów
+
+## Wykres rozrzutu
+
+Wykres rozrzutu przedstawia związek między dwiema zmiennymi ciągłymi. Każdy punkt
+na wykresie przedstawia pojedynczą obserwację, przy czym oś X reprezentuje zmienną
+niezależną (wyjaśniającą), a oś Y zmienną zależną (modelowaną). Podstawowym
+zastosowaniem jest wizualne zbadanie potencjalnego związku (korelacji) między
+dwiema zmiennymi.
+
+```{r}
+ggplot(diamonds, aes(x = x, y = y)) +
+  geom_point() +
+  labs(title = "Wymiary diamentu",
+       x = "Długość [mm]", y = "Szerokość [mm]")
+```
+
+## Wykres liniowy
+
+Wykres liniowy jest najczęściej używany do pokazywania trendów lub zmian w czasie.
+Oś pozioma (X) zazwyczaj reprezentuje czas, jednak nie jest to regułą. Linie
+proste łączą kolejne punkty, pokazując trend lub przebieg zmian, co pomaga
+przedstawić, w jaki sposób zmienna zależna na osi Y zmienia się wraz ze zmienną
+niezależną na osi X.
+
+Z uwagi na to, że nasz zbiór nie posiada zmiennej czasowej, to dokonamy wizualizacji
+średniej ceny diamentu w zależności od jego wagi. Jednakże, wagę potraktujemy
+jako zmienną kategoryczną z interwałem co 0,1 karata. W tym celu musimy wykonać
+odpowiednia obliczenia.
+
+```{r}
+avg_price = diamonds |>
+  group_by(carat = round(carat, 1)) |>
+  summarise(avg_price = mean(price)) |>
+  filter(carat < 3.1)
+```
+
+```{r}
+ggplot(avg_price, aes(x = carat, y = avg_price)) +
+  geom_line() +
+  labs(title = "Średnia cena diamentu w zależności od jego wagi",
+       x = "Waga [karat]", y = "Średnia cena [USD]")
+```
+
+## Wykres słupkowy
+
+Wykres słupkowy służy do wizualnego przedstawiania danych kategorycznych za
+pomocą prostokątnych słupków. Wysokość lub długość słupków jest proporcjonalna
+do wartości, które reprezentują.
+
+```{r}
+l = c("Przeciętna", "Dobra", "Bardzo dobra", "Premium", "Idealna")
+
+ggplot(diamonds, aes(x = cut)) +
+  geom_bar() +
+  scale_x_discrete(labels = l) +
+  labs(x = "Jakość diamentu", y = "Liczba diamentów")
+```
+
+## Wykres pudełkowy
+
+Wykres pudełkowy (nazywany również wykresem ramka-wąsy) to sposób przedstawienia
+rozkładu danych w oparciu o pięć następujących statystyk:
+
+- Wartość minimalna,
+- Pierwszy kwartyl (Q1, 25. percentyl),
+- Mediana (Q2, 50. percentyl),
+- Trzeci kwartyl (Q3, 75. percentyl),
+- Wartość maksymalna.
+
+"Pudełko" pokazuje zakres międzykwartylowy ($IQR = Q3 - Q1$), który zawiera
+środkowe 50% danych, natomiast "wąsy" rozciągają się od "pudełka" do najbardziej
+ekstremalnych punktów w zbiorze danych, które nie są klasyfikowane jako wartości
+odstające. Istnieje kilka sposobów definiowania długości "wąsów", ale najbardziej
+standardową metodą jest ich wyznaczenie z równań: $Q3 + 1.5 \times IQR$ dla
+górnej części oraz $Q1 - 1.5 \times IQR$ dla dolnej części. Jeśli jakieś punkty
+wykraczają poza ten zakres zdefiniowany przez "wąsy", to wtedy mamy do czynienia
+z wartościami odstającymi (*outliers*).
+
+Wykresy pudełkowe wykorzystuje się przede wszystkim do porównaniu rozkładu
+danych w wielu grupach, oceny symetrii i rozrzutu wartości oraz wykrywania
+wartości odstających.
+
+```{r}
+ggplot(diamonds, aes(x = cut, y = price)) +
+  geom_boxplot() +
+  scale_x_discrete(labels = l) +
+  labs(title = "Cena diamentu w zależności od jego jakości",
+       x = "Jakość diamentu", y = "Cena [USD]")
+```
+
+## Histogram
+
+Histogram, podobnie jak wykres pudełkowy, służy również do przedstawienia
+rozkładu danych liczbowych, z tą różnicą iż w postaci słupków. Histogram
+grupuje dane w przedziały (interwały) i pokazuje częstość wystąpień obserwacji
+mieszczących się w każdym z przedziałów. Kształt histogramu dostarcza istotnych
+informacji o rozkładzie danych (np. czy jest skośny czy symetryczny).
+
+Podczas tworzenia histogramu należy wybrać odpowiednią liczbę przedziałów,
+ponieważ zbyt mała liczba może spowodować nadmierne uproszczenie danych
+(generalizację), natomiast zbyt duża liczba może spowodować zaszumienie i
+utrudnić interpretację.
+
+```{r}
+ggplot(diamonds, aes(x = price)) +
+  geom_histogram(bins = 30) +
+  labs(x = "Cena [USD]", y = "Częstość")
+```
+
+## Wykres gęstości
+
+Wykres gęstości to kolejna metoda wizualizacji rozkładu zmiennej ciągłej. Jest
+to wygładzona wersja histogramu pokazująca ciągłą krzywą zamiast dyskretnych
+przedziałów jak w histogramie. Oś X przedstawia wartości zmiennej wejściowej,
+natomiast oś Y prezentuje szacowaną gęstość prawdopodobieństwa, co pomaga
+zidentyfikować najczęstsze wartości w danych.
+
+```{r}
+ggplot(diamonds, aes(x = price)) +
+  geom_density() +
+  labs(x = "Cena [USD]", y = "Częstość")
+```
+
+# Ustawienia wykresów
+
+## Modyfikacja estetyki
+
+## Zapisywanie
+
+# Zadanie
+
+Wybierz trzy tematy z wyzwania [30 Day Chart Challenge](https://github.com/30DayChartChallenge/Edition2025)
+i przygotuj odpowiednie wizualizacje (lub infografiki) na podstawie wybranych
+przez siebie danych (np. [Bank Danych Lokalnych](https://bdl.stat.gov.pl/) czy
+[Our World in Data](https://ourworldindata.org/)). Jako źródło inspiracji sprawdź
+`#30DayChartChallenge` na mediach społecznościowych, jednakże wizualizacje muszą
+być unikalne i wykonane samodzielnie! Do zadania oprócz samej ryciny, należy załączyć
+również kod.
