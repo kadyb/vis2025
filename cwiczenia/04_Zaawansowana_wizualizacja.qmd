@@ -1,0 +1,196 @@
+---
+title: "Automatyzacja wizualizacji danych"
+subtitle: "Zaawansowana wizualizacja danych"
+author: "Krzysztof Dyba"
+format:
+  html:
+    toc: true
+    toc-title: " "
+    embed-resources: true
+    code-links:
+      - text: Repozytorium
+        icon: github
+        href: https://github.com/kadyb/vis2025
+---
+
+```{r}
+library("ggplot2")
+```
+
+# Modyfikacja skali
+
+```{r}
+p1 = ggplot(diamonds, aes(x = carat, y = price, color = cut)) +
+  geom_point(alpha = 0.6)
+p1
+```
+
+```{r}
+#| warning: false
+
+p1 +
+  scale_x_continuous(
+    name = "Waga [karat]",
+    transform = "log",
+    labels = scales::label_number(accuracy = 0.1, suffix = " ct")) +
+  scale_y_continuous(
+    name = "Cena [USD]",
+    transform = "log10",
+    breaks = c(300, 1000, 3000, 10000),
+    labels = scales::label_dollar()) +
+  scale_color_manual(
+    name = "Jakość",
+    values = c("Fair" = "#E41A1C", "Good" = "#FF7F00", "Very Good" = "#FFFF33",
+               "Premium" = "#A65628", "Ideal" = "#377EB8"),
+    labels = c("Przeciętna", "Dobra", "Bardzo dobra", "Premium", "Idealna")) +
+  labs(title = "Cena diamentu w zależności od jego wagi i jakości")
+```
+
+# Modyfikacja motywu
+
+```{r}
+p2 = p1 +
+  labs(
+    title = "Analiza cen diamentów",
+    subtitle = "Zależność ceny diamentu od jego wagi oraz jakości",
+    caption = "Źródło: Zbiór danych 'diamonds' w ggplot2") +
+  xlab("Waga [karat]") +
+  ylab("Cena [USD]") +
+  scale_color_discrete(
+    name = "Jakość",
+    labels = c("Przeciętna", "Dobra", "Bardzo dobra", "Premium", "Idealna")
+  )
+p2
+```
+
+## Przykład 1
+
+```{r}
+p2 +
+  theme_light(base_size = 12) +
+  theme(
+    plot.title = element_text(face = "bold", size = rel(1.6), hjust = 0.5),
+    plot.subtitle = element_text(size = rel(1.1), hjust = 0.5),
+    plot.caption = element_text(face = "italic", color = "gray"),
+
+    axis.title = element_text(face = "bold", size = rel(1.1)),
+    axis.text = element_text(color = "black"),
+    axis.text.x = element_text(angle = 0, hjust = 0.5),
+
+    panel.grid.major = element_line(color = "gray", linetype = "dotted"),
+    panel.grid.minor = element_blank(),
+    panel.background = element_rect(fill = "white", color = "lightgray"),
+
+    legend.position = "top",
+    legend.title = element_text(face = "bold"),
+    legend.background = element_rect(fill = "white", color = "grey", linetype = "solid")
+  )
+```
+
+## Przykład 2
+
+```{r}
+motyw = function() {
+  theme_bw() +
+    theme(
+      panel.border = element_blank(),
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      axis.text = element_text(color = "black"),
+      axis.line = element_line(colour = "black", linewidth = 0.5),
+      axis.title = element_text(face = "bold"),
+      strip.background = element_rect(fill = NA, colour = NA),
+      legend.title = element_text(face = "bold")
+    )
+}
+```
+
+```{r}
+#| fig-cap: "[Rycina] Analiza cen diamentów. Zależność ceny diamentu od jego wagi oraz jakości."
+
+p1 +
+  xlab("Waga [karat]") +
+  ylab("Cena [USD]") +
+  scale_color_discrete(
+    name = "Jakość",
+    labels = c("Przeciętna", "Dobra", "Bardzo dobra", "Premium", "Idealna")
+  ) +
+  motyw()
+```
+
+# Adnotacje
+
+```{r}
+sr = round(mean(diamonds$price))
+
+ggplot(diamonds, aes(x = price)) +
+  geom_histogram(bins = 30) +
+  geom_vline(xintercept = sr, color = "blue", linetype = "dashed", linewidth = 1) +
+  annotate("text", x = sr + 2100, y = 8000, label = paste0("Średnia = $", sr), 
+           color = "blue") +
+  annotate("rect", xmin = 17600, xmax = 19000, ymin = 0, ymax = 500,
+           color = "red", fill = "#FF00000D", linewidth = 1) +
+  annotate("text", x = 16000, y = 3000, label = "Wartości odstające", color = "red") +
+  annotate("segment", x = 16000, xend = 18300, y = 2500, yend = 700, color = "red",
+           arrow = arrow(angle = 10, type = "closed")) +
+  xlab("Cena [USD]") +
+  ylab("Częstość")
+```
+
+# Panele
+
+```{r}
+#| fig-height: 3
+
+cut_labels = c("Przeciętna", "Dobra", "Bardzo dobra", "Premium", "Idealna")
+names(cut_labels) = levels(diamonds$cut)
+
+ggplot(diamonds, aes(x = price)) +
+  geom_histogram(bins = 30) +
+  facet_grid(cols = vars(cut), labeller = labeller(cut = cut_labels)) +
+  labs(x = "Cena [UDS]", y = "Częstość") +
+  theme(
+    strip.text = element_text(face = "bold"),
+    axis.text.x = element_text(angle = 60, vjust = 1, hjust = 1.1)
+  )
+```
+
+# Animacja
+
+```{r}
+set.seed(123)
+smp = sample(nrow(diamonds), 5000)
+
+p3 = ggplot(diamonds[smp, ], aes(x = carat, y = price, color = cut)) +
+  geom_point(alpha = 0.6, size = 2, show.legend = FALSE) +
+  scale_y_log10() +
+  labs(title = "{closest_state}") +
+  xlab("Waga [karat]") +
+  ylab("Cena [USD]") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold", size = rel(1.6), hjust = 0.5)
+  )
+```
+
+```{r}
+#| message: false
+#| fig-width: 5
+#| fig-height: 3
+
+library("gganimate")
+
+anim = p3 +
+  transition_states(states = cut, transition_length = 1, state_length = 2) +
+  ease_aes("sine-in-out") +
+  enter_fade() +
+  exit_fade()
+anim
+```
+
+```{r}
+#| eval: false
+
+animate(anim, duration = 6, fps = 10, width = 600, height = 400,
+        renderer = gifski_renderer("diamonds.gif"))
+```
