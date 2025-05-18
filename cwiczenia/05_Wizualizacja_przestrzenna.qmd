@@ -1,0 +1,232 @@
+---
+title: "Automatyzacja wizualizacji danych"
+subtitle: "Wizualizacja danych przestrzennych"
+author: "Krzysztof Dyba"
+format:
+  html:
+    toc: true
+    toc-title: " "
+    embed-resources: true
+    code-links:
+      - text: Repozytorium
+        icon: github
+        href: https://github.com/kadyb/vis2025
+---
+
+```{r}
+#| message: false
+
+library("sf")
+library("terra")
+library("ggplot2")
+library("ggspatial")
+```
+
+```{r}
+countries = "https://naciscdn.org/naturalearth/50m/cultural/ne_50m_admin_0_countries.zip"
+rivers = "https://naciscdn.org/naturalearth/50m/physical/ne_50m_rivers_lake_centerlines.zip"
+cities = "https://naciscdn.org/naturalearth/50m/cultural/ne_50m_populated_places.zip"
+hillshade = "https://naciscdn.org/naturalearth/50m/raster/SR_50M.zip/SR_50M.tif"
+rgb = "https://naciscdn.org/naturalearth/50m/raster/HYP_50M_SR.zip/HYP_50M_SR.tif"
+```
+
+```{r}
+countries = paste0("/vsizip/vsicurl/", countries)
+rivers = paste0("/vsizip/vsicurl/", rivers)
+cities = paste0("/vsizip/vsicurl/", cities)
+hillshade = paste0("/vsizip/vsicurl/", hillshade)
+rgb = paste0("/vsizip/vsicurl/", rgb)
+```
+
+```{r}
+# dane wektorowe
+countries = read_sf(countries)
+rivers = read_sf(rivers)
+cities = read_sf(cities)
+```
+
+```{r}
+# dane rastrowe
+hillshade = rast(hillshade)
+rgb = rast(rgb)
+```
+
+# Wizualizacja
+
+## Geometria
+
+```{r}
+ggplot() +
+  geom_sf(data = countries)
+```
+
+## Macierz
+
+**Jeden atrybut**
+
+```{r}
+window(hillshade) = ext(c(-15, 45, 34, 55)) # xmin, xmax, ymin, ymax
+hillshade = aggregate(hillshade, fact = 4) # downsample
+df_hillshade = as.data.frame(hillshade, xy = TRUE)
+```
+
+```{r}
+ggplot() +
+  geom_raster(data = df_hillshade, aes(x = x, y = y, fill = SR_50M))
+```
+
+**Trzy atrybuty (RGB)**
+
+```{r}
+window(rgb) = ext(c(-15, 45, 34, 55)) # xmin, xmax, ymin, ymax
+names(rgb) = c("red", "green", "blue")
+rgb = aggregate(rgb, fact = 4) # downsample
+df_rgb = as.data.frame(rgb, xy = TRUE)
+```
+
+```{r}
+# konwersja na kod szesnastkowy
+df_rgb$rgb = rgb(df_rgb$red, df_rgb$green, df_rgb$blue, maxColorValue = 255)
+```
+
+```{r}
+ggplot() +
+  geom_raster(data = df_rgb, aes(x = x, y = y, fill = rgb)) +
+  scale_fill_identity()
+```
+
+# Ustawienia
+
+## Odwzorowania
+
+Domyślnie wykorzystywane jest odwzorowanie walcowe równoodległościowe (*equidistant
+cylindrical*).
+
+```{r}
+ggplot() +
+  geom_sf(data = countries) +
+  labs(title = "Odwzorowanie Robinsona") +
+  coord_sf(crs = "+proj=robin") +
+  theme_minimal()
+```
+
+```{r}
+ggplot() +
+  geom_sf(data = countries) +
+  labs(title = "Odwzorowanie azymutalne Lamberta") +
+  coord_sf(crs = "+proj=laea +x_0=0 +y_0=0 +lon_0=10 +lat_0=30") +
+  theme_minimal()
+```
+
+## Łączenie warstw
+
+```{r}
+ggplot() +
+  geom_sf(data = countries) +
+  geom_sf(data = rivers, color = "blue") +
+  geom_sf(data = cities, color = "red", size = 0.5)
+```
+
+## Elementy mapy
+
+**Kolorystyka**
+
+```{r}
+ggplot() +
+  geom_sf(data = countries, fill = "lightgrey", color = "darkgrey", linewidth = 0.2) +
+  theme_void() +
+  theme(
+    panel.background = element_rect(fill = "lightblue", colour = NA)
+  )
+```
+
+**Strzałka północy i podziałka**
+
+```{r}
+idx = which(countries$ADMIN == "Poland")
+
+ggplot() +
+  geom_sf(data = countries[idx, ]) +
+  coord_sf(crs = "EPSG:2180") +
+  annotation_scale(location = "bl", style = "bar") +
+  annotation_north_arrow(location = "tl") +
+  theme_void()
+```
+
+**Podkład**
+
+```{r}
+ggplot() +
+  annotation_map_tile(type = "osm", zoom = 6, progress = "none") +
+  geom_sf(data = countries[idx, ], fill = NA, col = "red", linewidth = 2) +
+  theme_void()
+```
+
+# Rodzaje map
+
+## Kartogram
+
+```{r}
+cont = c("Africa", "Antarctica", "Asia", "Europe",
+         "North America", "Oceania", "South America")
+kontynenty = c("Afryka", "Antarktyda", "Azja", "Europa",
+               "Ameryka Pn.", "Australia", "Ameryka Pd.")
+
+ggplot(data = countries[countries$CONTINENT %in% cont, ]) +
+  geom_sf(aes(fill = CONTINENT)) +
+  scale_fill_brewer(palette = "Set1", name = NULL, labels = kontynenty) +
+  labs(title = "Kontynenty") +
+  theme_void() +
+  theme(
+    plot.title = element_text(face = "bold", size = rel(1.6), hjust = 0.5),
+    legend.position = "bottom"
+  )
+```
+
+```{r}
+ggplot(data = countries[countries$POP_EST > 0, ]) +
+  geom_sf(aes(fill = POP_EST)) +
+  scale_fill_distiller(
+    palette = "Blues",
+    direction = 1,
+    name = "Populacja",
+    transform = "log10", # skala logarytmiczna
+    labels = scales::label_number(scale_cut = scales::cut_short_scale())) +
+  labs(title = "Liczba ludności na świecie") +
+  theme_void() +
+  theme(
+    plot.title = element_text(face = "bold", size = rel(1.6), hjust = 0.5),
+    legend.text = element_text(angle = 30, vjust = 1, hjust = 1),
+    legend.position = "bottom"
+  )
+```
+
+## Mapa gęstości
+
+```{r}
+# wygenerowanie punktów
+pts = data.frame(
+  lon = runif(10000, min = 14, max = 24),
+  lat = runif(10000, min = 49, max = 55)
+)
+
+ggplot() +
+  stat_density_2d(data = pts, aes(x = lon, y = lat, fill = after_stat(density)),
+                  geom = "raster", contour = FALSE, interpolate = TRUE) +
+  geom_sf(data = countries[idx, ], col = "red", fill = NA, linewidth = 2) +
+  scale_fill_distiller(palette = "Greys", direction = 1) +
+  theme(
+    axis.title = element_blank(),
+    legend.position = "none"
+  )
+```
+
+# Zadanie
+
+Wybierz trzy tematy z wyzwania [30 Day Map Challenge](https://30daymapchallenge.com/)
+i przygotuj odpowiednie wizualizacje (lub infografiki) na podstawie wybranych
+przez siebie danych przestrzennych (np. [Geoportal](https://mapy.geoportal.gov.pl) czy
+[OpenStreetMap](https://www.openstreetmap.org)). Jako źródło inspiracji sprawdź
+`#30DayMapChallenge` na mediach społecznościowych, jednakże wizualizacje muszą
+być unikalne i wykonane samodzielnie! Do zadania oprócz samej ryciny, należy załączyć
+również kod.
