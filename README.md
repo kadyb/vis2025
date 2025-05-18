@@ -23,6 +23,7 @@ Aplikacja dostępna jest na różnych platformach do pobrania w [tym miejscu](ht
 2. [Integracja danych](https://kadyb.github.io/vis2025/cwiczenia/02_Integracja_danych.html)
 3. [Wizualizacja danych nieprzestrzennych](https://kadyb.github.io/vis2025/cwiczenia/03_Wizualizacja.html)
 4. [Zaawansowana wizualizacja](https://kadyb.github.io/vis2025/cwiczenia/04_Zaawansowana_wizualizacja.html)
+5. [Wizualizacja danych przestrzennych](https://kadyb.github.io/vis2025/cwiczenia/05_Wizualizacja_przestrzenna.html)
 
 # Materiały dodatkowe
 
