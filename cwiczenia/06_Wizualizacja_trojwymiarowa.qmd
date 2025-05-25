@@ -53,7 +53,7 @@ dsm = resample(dsm, rgb, method = "bilinear")
 
 ```{r}
 # docięcie
-e = ext(357900, 359800, 512400, 514400)
+e = ext(c(357900, 359800, 512400, 514400))
 rgb = crop(rgb, e)
 dsm = crop(dsm, e)
 ```
