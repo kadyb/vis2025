@@ -1,0 +1,166 @@
+---
+title: "Automatyzacja wizualizacji danych"
+subtitle: "Wizualizacja trójwymiarowa (3D)"
+author: "Krzysztof Dyba"
+format:
+  html:
+    toc: true
+    toc-title: " "
+    embed-resources: true
+    code-links:
+      - text: Repozytorium
+        icon: github
+        href: https://github.com/kadyb/vis2025
+---
+
+```{r}
+#| message: false
+
+library("terra")
+library("ggplot2")
+library("rayshader")
+options(timeout = 600)
+```
+
+# Przygotowanie danych
+
+```{r}
+dsm_url = "https://opendata.geoportal.gov.pl/NumDaneWys/NMPT/80271/80271_1539162_N-33-130-D-b-1-4.asc"
+rgb_url = "https://opendata.geoportal.gov.pl/ortofotomapa/78957/78957_1246396_N-33-130-D-b-1-4.tif"
+```
+
+```{r}
+#| eval: false
+#| message: false
+
+download.file(dsm_url, "../dane/dsm.tif", mode = "wb")
+download.file(rgb_url, "../dane/rgb.tif", mode = "wb")
+```
+
+```{r}
+dsm = rast("../dane/dsm.tif")
+crs(dsm) = "EPSG:2180"
+rgb = rast("../dane/rgb.tif")
+```
+
+```{r}
+#| include: false
+
+# zmniejszenie rozdzielczości
+rgb = aggregate(rgb, fact = 8, fun = "mean")
+dsm = resample(dsm, rgb, method = "bilinear")
+```
+
+```{r}
+# docięcie
+e = ext(357900, 359800, 512400, 514400)
+rgb = crop(rgb, e)
+dsm = crop(dsm, e)
+```
+
+# Ryciny dwuwymiarowe
+
+## Model terenu
+
+```{r}
+df_dsm = as.data.frame(dsm, xy = TRUE)
+```
+
+```{r}
+ggplot() +
+  geom_raster(data = df_dsm, aes(x = x, y = y, fill = dsm)) +
+  scale_fill_viridis_c(name = "Wysokość [m n.p.m.]") +
+  theme_void() +
+  theme(
+    aspect.ratio = 1,
+    legend.position = "bottom"
+  )
+```
+
+## Cieniowanie
+
+```{r}
+# transpozycja
+elev_matrix = raster_to_matrix(dsm, verbose = FALSE)
+```
+
+```{r}
+hillshade = sphere_shade(elev_matrix, texture = "imhof1", sunangle = 315,
+                         zscale = 1)
+plot_map(hillshade)
+```
+
+```{r}
+shadow = lamb_shade(elev_matrix, sunaltitude = 45, sunangle = 315, zscale = 1)
+plot_map(shadow)
+```
+
+```{r}
+hillshade |>
+  add_shadow(shadow) |>
+  plot_map()
+```
+
+## RGB
+
+```{r}
+r = raster_to_matrix(rgb[[1]], verbose = FALSE)
+g = raster_to_matrix(rgb[[2]], verbose = FALSE)
+b = raster_to_matrix(rgb[[3]], verbose = FALSE)
+```
+
+```{r}
+# najpierw są kolumny, potem wiersze!
+rgb_array = array(0, dim = c(ncol(rgb), nrow(rgb), 3))
+
+rgb_array[,, 1] = r / 255
+rgb_array[,, 2] = g / 255
+rgb_array[,, 3] = b / 255
+
+rgb_array = aperm(rgb_array, c(2, 1, 3))
+plot_map(rgb_array)
+```
+
+# Ryciny trójwymiarowe
+
+## Model terenu
+
+```{r}
+elev_matrix |>
+  sphere_shade() |>
+  add_shadow(shadow) |>
+  plot_3d(elev_matrix, theta = -20, phi = 30, zoom = 1/2)
+
+render_snapshot()
+```
+
+## Tekstura
+
+```{r}
+plot_3d(rgb_array, elev_matrix, theta = -20, phi = 30, zoom = 1/2)
+render_label(elev_matrix, text = "Kampus UAM",
+             extent = e, long = 358971, lat = 513217,
+             textcolor = "white", linecolor = "white", textsize = 2, linewidth = 4)
+
+render_snapshot()
+```
+
+## Animacja
+
+```{r}
+#| eval: false
+
+elev_matrix |>
+  sphere_shade() |>
+  plot_3d(elev_matrix)
+
+render_movie(filename = "kampus.gif")
+```
+
+# Zadanie
+
+1. Dokonaj wizualizacji średniej wysokości zabudowy wybranego obszaru.
+Wykorzystaj w tym celu odpowiednie cyfrowe modele wysokościowe oraz obrysy
+budynków z Geoportalu.
+2. Wykonaj wizualizację trójwymiarową wybranego obszaru uwzględniając jego
+teksturę. Uprzednio zapoznaj się z dokumentacją [rayshader](https://www.rayshader.com/).
