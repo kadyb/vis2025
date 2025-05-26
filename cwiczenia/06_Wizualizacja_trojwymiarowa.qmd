@@ -44,7 +44,7 @@ rgb = rast("../dane/rgb.tif")
 ```
 
 ```{r}
-#| include: false
+#| output: false
 
 # zmniejszenie rozdzielczości
 rgb = aggregate(rgb, fact = 8, fun = "mean")
