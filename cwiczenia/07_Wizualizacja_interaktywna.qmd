@@ -1,0 +1,21 @@
+---
+title: "Automatyzacja wizualizacji danych"
+subtitle: "Wizualizacja interaktywna"
+author: "Krzysztof Dyba"
+format:
+  html:
+    toc: true
+    toc-title: " "
+    embed-resources: true
+    code-links:
+      - text: Repozytorium
+        icon: github
+        href: https://github.com/kadyb/vis2025
+---
+
+# Zadanie
+
+1. Stwórz interaktywny wykres używając bibliotekę [plotly](https://plotly.com/r/).
+2. Stwórz interaktywną mapę używając bibliotekę [leaflet](https://rstudio.github.io/leaflet/).
+3. Stwórz prosty dashboard używając [Quarto](https://quarto.org/docs/dashboards/).
+Kod musi zostać zapisany jako osobny plik z rozszerzeniem `.qmd`.
