@@ -100,3 +100,5 @@ w różnych formatach.
 
 2. Dokonaj konwersji formatu danych punktowych pliku `miasta.csv` do GeoJSON używając
 narzędzia [ogr2ogr](https://gdal.org/en/stable/programs/ogr2ogr.html) z GDAL.
+Upewnij się, że po konwersacji dane zostaną prawidłowo wczytane w QGIS jako
+obiekt przestrzenny.
