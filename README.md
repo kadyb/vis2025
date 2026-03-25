@@ -3,7 +3,19 @@
 To repozytorium zawiera materiały do kursu "Automatyzacja wizualizacji danych" prowadzonego
 na Uniwersytecie Adama Mickiewicza w semestrze letnim w 2025 r.
 
+Wizualizacja danych to graficzne przedstawienie danych za pomocą wykresów, map i innych form
+wizualnych, ułatwiające zrozumienie ukrytych w nich wzorców i trendów. Odgrywa ona kluczową rolę,
+ponieważ ludzki umysł z natury postrzega świat obrazowo, dzięki czemu informacje wizualne
+przetwarzamy znacznie szybciej niż tekst czy liczby. W praktyce oznacza to, że dobrze zaprojektowany
+wykres potrafi w kilka sekund przekazać sedno złożonych procesów. Ponadto, wizualizacje wspierają
+analizę danych, pomagają w kontroli jakości poprzez uwidacznianie błędów i niespójności, a także
+wzmacniają narrację w raportach czy prezentacjach.
 
+Spośród wielu dostępnych narzędzi język programowania R wyróżnia się jako jedno z najczęściej
+stosowanych do wizualizacji danych. Popularny pakiet [ggplot2](https://ggplot2.tidyverse.org/)
+zapewnia zaawansowane podejście do projektowania wizualizacji, umożliwiając tworzenie zarówno
+prostych wykresów punktowych, jak i skomplikowanych, wielopanelowych ryciny. Wykresy są
+generowane za pomocą kodu, dzięki czemu każda wizualizacja jest w pełni odtwarzalna.
 
 # Wstęp
 
