@@ -17,7 +17,56 @@ format:
 library("ggplot2")
 ```
 
-# Modyfikacja skali
+# Skala
+
+## Rodzaje
+
+**1. Skale położenia (osie X i Y)**:
+
+  - Zmienne ciągłe (liczbowe).
+  - Zmienne dyskretne (kategoryczne).
+  - Skala czasu.
+
+**2. Skale kolorów i wypełnień**:
+
+  - Sekwencyjna (*sequential*) -- gradient od koloru jasnego do ciemnego lub
+  odwrotnie. Przykładowe zastosowanie to wizualizacja temperatury (im temperatura
+  wyższa, tym ciemniejszy kolor).
+  
+```{r}
+#| echo: false
+#| fig-height: 2
+
+RColorBrewer::display.brewer.pal(7, "Oranges")
+```
+  
+  - Rozbieżna (*diverging*) -- dwie palety sekwencyjne połączone w środku
+  neutralnym kolorem (najczęściej białym), na końcach skali znajdują się dwa 
+  kontrastujące ze sobą kolory (np. ciemnoczerwony i ciemnozielony).
+  Przykładowe zastosowanie to wizualizacja wyników ankiety -- ciemnozielony kolor
+  oznacza silne popracie, a ciemnoczerwony silny sprzeciw.
+  
+```{r}
+#| echo: false
+#| fig-height: 2
+
+RColorBrewer::display.brewer.pal(7, "RdYlGn")
+```
+  
+  - Jakościowa / Kategoryczna (*qualitative*) -- kolory całkowicie różne od siebie,
+  bez sugerowania hierarchii. Służy do wizualizacji grup (kategorii).
+  
+```{r}
+#| echo: false
+#| fig-height: 2
+
+RColorBrewer::display.brewer.pal(7, "Set1")
+```
+
+
+**3. Skale rozmiaru, kształtu i przezroczystości**.
+
+## Modyfikacja
 
 ```{r}
 p1 = ggplot(diamonds, aes(x = carat, y = price, color = cut)) +
@@ -46,7 +95,7 @@ p1 +
   labs(title = "Cena diamentu w zależności od jego wagi i jakości")
 ```
 
-# Modyfikacja motywu
+# Motyw graficzny
 
 ```{r}
 p2 = p1 +
