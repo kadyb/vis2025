@@ -81,6 +81,105 @@ czy wiadomości.
 - Pliki multimedialne (np. JPEG, WMV, MP3) -- formaty umożliwiające przechowywanie
 obrazów, filmów i muzyki z uwzględnieniem kompresji stratnej lub bezstratnej.
 
+# Układ danych
+
+Istnieją dwa sposoby organizacji danych tabelarycznych:
+
+- Układ szeroki (*wide*), w którym każda zmienna (cecha) znajduje się w osobnej
+kolumnie.
+- Układ długi (*long*), w którym zmienne (cechy) znajdują się w wierszach,
+a nie osobnych kolumnach. W praktyce oznacza to, że jedna kolumna zawiera
+informacje o tym, co zostało zmierzone, natomiast kolejna kolumna zawiera wynik
+pomiaru. Taki zapis nazywa się układem klucz-wartość (*key-value*).
+
+Układ szeroki wykorzystywany jest ze względu na to, iż jest bardziej czytelny
+dla człowieka i zazwyczaj wymagany jest przez testy statystyczne oraz algorytmy
+uczenia maszynowego. Układ długi jest w szczególności dostosowany do baz danych
+i programów do przetwarzania danych (jest także wymagany przez pakiet *ggplot2*).
+Zazwyczaj modelowanie szeregów czasowych oraz obliczanie statystyk dla grup
+wymaga formatu długiego.
+
+Załóżmy, że posiadamy wyniki badań trzech pacjentów, którym na trzech kolejnych
+wizytach mierzyliśmy tętno (zmienna `hr`; uderzenia na minutę). Dane te możemy
+przedstawić w następujący sposób:
+
+:::{style="width: 70%; margin: auto;"}
+
+| Pacjent | Wiek | hr_1 | hr_2 | hr_3 |
+|---------|------|------|------|------|
+| P1      | 61   | 72   | 83   | 78   |
+| P2      | 82   | 75   | 72   | 75   |
+| P3      | 63   | 89   | 92   | 91   |
+: UKŁAD SZEROKI
+
+:::
+
+\
+
+:::{style="width: 70%; margin: auto;"}
+
+| Pacjent | Wiek | Pomiar | hr  |
+|---------|------|--------|-----|
+| P1      | 61   | 1      | 72  |
+| P1      | 61   | 2      | 83  |
+| P1      | 61   | 3      | 78  |
+| P2      | 82   | 1      | 75  |
+| P2      | 82   | 2      | 72  |
+| P2      | 82   | 3      | 75  |
+| P3      | 63   | 1      | 89  |
+| P3      | 63   | 2      | 92  |
+| P3      | 63   | 3      | 91  |
+: UKŁAD DŁUGI
+
+:::
+
+## Konwersja
+
+Najłatwiejszy sposób żeby dokonać konwersji pomiędzy tymi dwoma układami danych,
+to wykorzystanie pakietu [tidyr](https://tidyr.tidyverse.org/) i funkcji:
+
+- `pivot_wider()` -- konwersja z układu długiego na szeroki.
+- `pivot_longer()` -- konwersja z układu szerokiego na długi.
+
+```{r}
+library("tidyr")
+```
+
+```{r}
+# układ szeroki
+df = data.frame(
+  Pacjent = c("P1", "P2", "P3"),
+  Wiek = c(61, 82, 63),
+  hr_1 = c(72, 75, 89),
+  hr_2 = c(83, 72, 92),
+  hr_3 = c(78, 75, 91)
+)
+print(df)
+```
+
+```{r}
+# szeroki na długi
+df_long = pivot_longer(
+  df,
+  cols = starts_with("hr"),  # wybór kolumn do konwersji
+  names_to = "Pomiar",       # nowa kolumna "klucz"
+  names_prefix = "hr_",      # usunięcie prefiksu z nazwy zmiennej
+  values_to = "hr"           # nowa kolumna "wartość"
+)
+print(df_long)
+```
+
+```{r}
+# długi na szeroki
+df_wide = pivot_wider(
+  df_long,
+  names_from = "Pomiar",     # wybór kolumny "klucz"
+  names_prefix = "hr_",      # dodanie prefiksu do nazwy zmiennej
+  values_from = "hr"         # wybór kolumny "wartość"
+)
+print(df_wide)
+```
+
 # Zadanie
 
 1. W katalogu `dane` znajdziesz legendę do Copernicus Global Land Cover zapisaną
