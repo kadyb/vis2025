@@ -92,12 +92,12 @@ a nie osobnych kolumnach. W praktyce oznacza to, że jedna kolumna zawiera
 informacje o tym, co zostało zmierzone, natomiast kolejna kolumna zawiera wynik
 pomiaru. Taki zapis nazywa się układem klucz-wartość (*key-value*).
 
-Układ szeroki wykorzystywany jest ze względu na to, iż jest bardziej czytelny
-dla człowieka i zazwyczaj wymagany jest przez testy statystyczne oraz algorytmy
-uczenia maszynowego. Układ długi jest w szczególności dostosowany do baz danych
-i programów do przetwarzania danych (jest także wymagany przez pakiet *ggplot2*).
-Zazwyczaj modelowanie szeregów czasowych oraz obliczanie statystyk dla grup
-wymaga formatu długiego.
+Układ szeroki jest bardziej czytelny dla człowieka i zazwyczaj wymagany przez
+testy statystyczne oraz algorytmy uczenia maszynowego. Z kolei układ długi
+jest przede wszystkim dostosowany do relacyjnych baz danych i programów do
+przetwarzania danych (jest także wymagany przez pakiet *ggplot2*). Jest on
+również preferowany przy modelowaniu szeregów czasowych oraz obliczaniu
+statystyk grupowych.
 
 Załóżmy, że posiadamy wyniki badań trzech pacjentów, którym na trzech kolejnych
 wizytach mierzyliśmy tętno (zmienna `hr`; uderzenia na minutę). Dane te możemy
