@@ -2404,9 +2404,9 @@ window.Quarto = {
 <p><strong>Podstawowe komponenty wykresu:</strong></p>
 <ul>
 <li><strong>dane</strong> – zbiór danych zapisany jako ramka danych w długiej formie (nie szerokiej).</li>
-<li><strong>estetyka</strong> (<code>aes()</code>) – sposób odniesienia zmiennych w danych do właściwości wizualnych, np. oś X, oś Y, kolor, rozmiar, kształt.</li>
+<li><strong>estetyka</strong> (<code>aes()</code>) – służy do mapowania danych na atrybuty wizualne, np. na osi X będzie przedstawiony wzrost, na osi Y będzie przedstawiona waga, a kolor będzie oznaczał płeć.</li>
 <li><strong>geometrie</strong> (<code>geom_*()</code>) – obiekty geometryczne użyte do reprezentacji danych, np. punkty, linie, słupki.</li>
-<li>skale (<code>scale_*()</code>) – sposób, w jaki wartości danych są konwertowane na pozycje na osi lub zakres kolorów.</li>
+<li>skale (<code>scale_*()</code>) – sposób, w jaki zmienne są wyświetlane, np. wybór określonych kolorów, zmiana skali na logarytmiczną, ustawienie zakresu wartości.</li>
 <li>aspekty (<code>facet_*()</code>) – podział wykresu na mniejsze panele na podstawie zmiennej kategorialnej lub podzbiorów.</li>
 <li>transformacje statystyczne (<code>stat_*()</code>) – obliczenia statystyczne, np. zliczanie wystąpień, wyznaczanie interwałów czy wygładzanie linii trendu.</li>
 <li>elementy graficzne (<code>theme()</code>) – elementy niebędące danymi związane ze stylizacją wykresu, np. etykiety osi, kolor tła, linie siatki, czcionka.</li>
@@ -2630,6 +2630,17 @@ window.Quarto = {
 </section>
 <section id="zapisywanie" class="level2">
 <h2 class="anchored" data-anchor-id="zapisywanie">Zapisywanie</h2>
+<p>Do zapisu wykresów jako pliki graficzne na dysku wykorzystuje się funkcję <code>ggsave()</code>. Domyślnie zapisuje ona ostatni wykres wyświetlony na ekranie, jednak lepiej jest wcześniej przypisać wykres do zmiennej.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">=</span> <span class="fu">ggplot</span>(<span class="at">data =</span> diamonds, <span class="fu">aes</span>(<span class="at">x =</span> carat, <span class="at">y =</span> price)) <span class="sc">+</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;diamonds.png&quot;</span>, p)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Podczas zapisywania można określić dokładne wymiary (<code>width</code>, <code>height</code>, <code>units</code>) oraz rozdzielczość (<code>dpi</code>) obrazu. Obrazy można zapisać jako rastrowe (np. <code>.png</code>, <code>.jpg</code>, <code>.tiff</code>) lub wektorowe (np. <code>.pdf</code>, <code>.svg</code>). Zazwyczaj preferowane są formaty wektorowe, ponieważ nie tracą one ostrości przy powiększaniu.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;diamonds.pdf&quot;</span>, p, <span class="at">width =</span> <span class="dv">6</span>, <span class="at">height =</span> <span class="dv">4</span>, <span class="at">units =</span> <span class="st">&quot;in&quot;</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 </section>
 </section>
 

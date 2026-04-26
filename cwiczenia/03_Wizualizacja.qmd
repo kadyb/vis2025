@@ -43,14 +43,15 @@ profesjonalnych rycin w publikacjach naukowych.
 **Podstawowe komponenty wykresu:**
 
 - **dane** -- zbiór danych zapisany jako ramka danych w długiej formie (nie szerokiej).
-- **estetyka** (`aes()`) -- sposób odniesienia zmiennych w danych do właściwości
-wizualnych, np. oś X, oś Y, kolor, rozmiar, kształt.
-- **geometrie** (`geom_*()`) -- obiekty geometryczne użyte do reprezentacji danych,
-np. punkty, linie, słupki.
-- skale (`scale_*()`) -- sposób, w jaki wartości danych są konwertowane na pozycje
-na osi lub zakres kolorów.
-- aspekty (`facet_*()`) -- podział wykresu na mniejsze panele na podstawie zmiennej
-kategorialnej lub podzbiorów.
+- **estetyka** (`aes()`) -- służy do mapowania danych na atrybuty wizualne,
+np. na osi X będzie przedstawiony wzrost, na osi Y będzie przedstawiona waga,
+a kolor będzie oznaczał płeć.
+- **geometrie** (`geom_*()`) -- obiekty geometryczne użyte do reprezentacji
+danych, np. punkty, linie, słupki.
+- skale (`scale_*()`) -- sposób, w jaki zmienne są wyświetlane, np. wybór
+określonych kolorów, zmiana skali na logarytmiczną, ustawienie zakresu wartości.
+- aspekty (`facet_*()`) -- podział wykresu na mniejsze panele na podstawie
+zmiennej kategorialnej lub podzbiorów.
 - transformacje statystyczne (`stat_*()`) -- obliczenia statystyczne, np.
 zliczanie wystąpień, wyznaczanie interwałów czy wygładzanie linii trendu.
 - elementy graficzne (`theme()`) -- elementy niebędące danymi związane ze
@@ -263,3 +264,22 @@ w określonej warstwie geometrycznej mają wpływ tylko na tę warstwę.
 
 ## Zapisywanie
 
+Do zapisu wykresów jako pliki graficzne na dysku wykorzystuje się funkcję
+`ggsave()`. Domyślnie zapisuje ona ostatni wykres wyświetlony na ekranie,
+jednak lepiej jest wcześniej przypisać wykres do zmiennej.
+
+```{r eval=FALSE}
+p = ggplot(data = diamonds, aes(x = carat, y = price)) +
+  geom_point()
+
+ggsave("diamonds.png", p)
+```
+
+Podczas zapisywania można określić dokładne wymiary (`width`, `height`, `units`)
+oraz rozdzielczość (`dpi`) obrazu. Obrazy można zapisać jako rastrowe (np. `.png`,
+`.jpg`, `.tiff`) lub wektorowe (np. `.pdf`, `.svg`). Zazwyczaj preferowane
+są formaty wektorowe, ponieważ nie tracą one ostrości przy powiększaniu.
+
+```{r eval=FALSE}
+ggsave("diamonds.pdf", p, width = 6, height = 4, units = "in", dpi = 300)
+```
