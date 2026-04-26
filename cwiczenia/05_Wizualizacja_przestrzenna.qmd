@@ -230,13 +230,3 @@ ggplot() +
     legend.position = "none"
   )
 ```
-
-# Zadanie
-
-Wybierz trzy tematy z wyzwania [30 Day Map Challenge](https://30daymapchallenge.com/)
-i przygotuj odpowiednie wizualizacje (lub infografiki) na podstawie wybranych
-przez siebie danych przestrzennych (np. [Geoportal](https://mapy.geoportal.gov.pl) czy
-[OpenStreetMap](https://www.openstreetmap.org)). Jako źródło inspiracji sprawdź
-`#30DayMapChallenge` na mediach społecznościowych, jednakże wizualizacje muszą
-być unikalne i wykonane samodzielnie! Do zadania oprócz samej ryciny, należy załączyć
-również kod.

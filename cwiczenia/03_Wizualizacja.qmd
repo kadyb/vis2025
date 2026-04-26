@@ -231,14 +231,35 @@ ggplot(diamonds, aes(x = price)) +
 
 ## Modyfikacja
 
+Aspekty wizualne wykresu można modyfikować na dwa sposoby. Pierwszy, przypisując
+z góry ustaloną wartość lub drugi, wykorzystując zmienną (atrybut) ze zbioru
+danych. Zacznijmy od zmiany koloru wszystkich punktów na niebieski.
+
+```{r}
+ggplot(data = diamonds, aes(x = carat, y = price)) +
+  geom_point(color = "skyblue") +
+  labs(title = "Cena diamentu w zależności od jego wagi",
+       x = "Waga [karat]", y = "Cena [USD]")
+```
+
+W drugim podejściu pokolorujmy punkty według jakości diamentu.
+
+```{r}
+ggplot(data = diamonds, aes(x = carat, y = price, color = cut)) +
+  geom_point() +
+  scale_colour_brewer(labels = cut_labels, palette = "Blues") +
+  labs(title = "Cena diamentu w zależności od jego wagi i jakości",
+       x = "Waga [karat]", y = "Cena [USD]", color = "Jakość") +
+  theme(legend.position = "top")
+```
+
+Oprócz koloru (`color`) punktów i linii można zmienić wypełnienie (`fill`),
+rozmiar (`size`), przezroczystość (`alpha`), kształt punktów (`shape`)
+czy typ linii (`linetype`).
+
+Co należy pamiętać, to że, argumenty wizualne zdefiniowane w funkcji `ggplot()`
+mają zastosowanie do wszystkich warstw. Natomiast argumenty zdefiniowane
+w określonej warstwie geometrycznej mają wpływ tylko na tę warstwę.
+
 ## Zapisywanie
 
-# Zadanie
-
-Wybierz trzy tematy z wyzwania [30 Day Chart Challenge](https://github.com/30DayChartChallenge/Edition2025)
-i przygotuj odpowiednie wizualizacje (lub infografiki) na podstawie wybranych
-przez siebie danych (np. [Bank Danych Lokalnych](https://bdl.stat.gov.pl/) czy
-[Our World in Data](https://ourworldindata.org/)). Jako źródło inspiracji sprawdź
-`#30DayChartChallenge` na mediach społecznościowych, jednakże wizualizacje muszą
-być unikalne i wykonane samodzielnie! Do zadania oprócz samej ryciny, należy załączyć
-również kod.
