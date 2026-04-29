@@ -356,30 +356,37 @@ dane |>
 W pakiecie `nycflights13` znajdziesz zbiór danych `flights`. Zapoznaj się z jego
 dokumentacją i wykonaj następujące zadania używając pakietu `dplyr`:
 
-1. Wczytaj ten zbiór danych i dokonaj jego inspekcji, aby poznać strukturę,
-zmienne oraz typ danych. Sprawdź również brakujące wartości (`NA`).
+1. Wczytaj ten zbiór danych i dokonaj jego inspekcji:
+    - sprawdź liczbę obserwacji i zmiennych,
+    - wyświetl nazwy kolumn oraz ich typy,
+    - wyświetl pierwsze kilka wierszy zbioru,
+    - sprawdź liczbę brakujących wartości w każdej kolumnie.
+
 2. Dokonaj analizy danych:
-    - Oblicz liczbę odwołanych lotów.
-    - Oblicz całkowite średnie opóźnienie odlotów dla wszystkich lotów.
-    - Znajdź 10 najszybszych lotów z Nowego Jorku do Chicago (`ORD`).
-    - Zidentyfikuj loty, których rzeczywisty czas trwania był najdłuższy w stosunku
-      do ich odległości.
-    - Dodaj nową kolumnę do ramki danych reprezentującą średnią prędkość lotu.
-      Dokonaj konwersji jednostek do $km/h$.
-    - Pogrupuj dane według lotniska początkowego i oblicz całkowitą liczbę lotów
-      dla każdego z nich.
-    - Pogrupuj dane według lotniska początkowego i oblicz średnie opóźnienie
-      odlotu dla każdego z nich. Uporządkuj wyniki w kolejności malejącej według
-      opóźnienia. Które lotnisko ma największe średnie opóźnienie?
-    - Pogrupuj dane według przewoźników i wskaż tych, którzy wykonali ponad
-      10 tysięcy lotów. Który przewoźnik wykonał najwięcej lotów?
-    - Pogrupuj dane według przewoźników i oblicz średnie opóźnienie odlotu dla
-      każdego z nich. Połącz z danymi zawierającymi pełne nazwy linii lotniczych.
-      Znajdź linię lotniczą o najgorszych wynikach.
-    - Pogrupuj dane według miejsca docelowego, oblicz średnie opóźnienie przylotu
-      i wyświetl 10 miejsc z największym opóźnieniem.
-    - Pogrupuj dane według miesięcy i oblicz średnie opóźnienie odlotu. Czy istnieją
-      jakieś zauważalne wzorce sezonowe?
-3. Samodzielnie sformułuj pytanie badawcze, na które udzielisz odpowiedzi
-wykorzystując niniejszy zbiór danych. Przykładowo pytanie może dotyczyć wpływu
-warunków atmosferycznych na opóźnienia lub zmienności lotów w ujęciu czasowym.
+    - 2.1. Oblicz liczbę odwołanych lotów. Przyjmij, że lot odwołany to taki,
+           który nie posiada zapisanego czasu odlotu.
+    - 2.2. Oblicz średnie opóźnienie odlotów na podstawie wszystkich lotów.
+    - 2.3. Znajdź 10 lotów do Chicago (`ORD`) o najkrótszym czasie trwania.
+    - 2.4. Zidentyfikuj loty, dla których stosunek czasu lotu do odległości
+           był największy.
+    - 2.5. Dodaj nową kolumnę do ramki danych reprezentującą średnią prędkość
+           lotu. Dokonaj konwersji jednostek do $km/h$.
+    - 2.6. Pogrupuj dane według lotniska początkowego i oblicz średnie opóźnienie
+           odlotu dla każdego z nich. Uporządkuj wyniki w kolejności malejącej
+           według opóźnienia. Które lotnisko ma największe średnie opóźnienie?
+    - 2.7. Pogrupuj dane według przewoźników i wskaż tych, którzy wykonali ponad
+           10 tysięcy lotów. Który przewoźnik wykonał najwięcej lotów?
+    - 2.8. Pogrupuj dane według przewoźników i oblicz średnie opóźnienie odlotu
+           dla każdego z nich. Połącz z danymi zawierającymi pełne nazwy linii
+           lotniczych. Znajdź linię lotniczą o najgorszych wynikach.
+    - 2.9. Pogrupuj dane według miejsca docelowego, oblicz średnie opóźnienie
+           przylotu i wyświetl 10 miejsc z największym opóźnieniem.
+           Podaj pełne nazwy lotnisk.
+    - 2.10. Pogrupuj dane według miesięcy i oblicz średnie opóźnienie odlotu.
+            Czy istnieją jakieś zauważalne wzorce sezonowe?
+
+3. Sformułuj własne pytanie badawcze, na które udzielisz odpowiedzi
+wykorzystując niniejszy zbiór danych. Wykonaj odpowiednią analizę, krótko
+zinterpretuj otrzymane wyniki oraz przedstaw finalny wniosek. Przykładowo
+pytanie może dotyczyć wpływu warunków atmosferycznych na opóźnienia lub
+zmienności lotów w ujęciu czasowym.
