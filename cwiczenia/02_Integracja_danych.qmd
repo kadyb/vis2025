@@ -15,19 +15,20 @@ format:
 
 # Wprowadzenie
 
-**Integracja danych** to proces łączenia danych z różnych źródeł, systemów lub
-formatów do ujednoliconego i spójnego zbioru w celu wsparcia analiz, raportowania
-i podejmowania decyzji. Obejmuje on gromadzenie, przekształcanie i agregowanie
-danych z wielu źródeł takich jak pliki, bazy danych, platformy w chmurze czy
-interfejsy programistyczne.
+**Integracja danych** to proces łączenia danych z różnych źródeł, systemów
+lub formatów do ujednoliconego i spójnego zbioru. Obejmuje on gromadzenie, 
+przekształcanie i agregowanie danych z wielu źródeł, takich jak pliki, bazy
+danych, platformy chmurowe czy interfejsy programistyczne. Integracja stanowi
+kluczowy etap poprzedzający analizę danych i raportowanie.
 
-Analiza danych z różnych źródeł jest wymagającym zadaniem z uwagi na różne
-struktury i schematy przechowywania danych, w związku z czym ich formaty mogą
-być odmienne w zależności od systemu. Ponadto, same dane mogą posiadać
-zróżnicowany poziom jakości oraz dokładności. Z tych względów, głównym celem
-integracji jest zapewnienie pojedynczego i scentralizowanego dostępu do danych
-dla użytkowników oraz ich spójności poprzez czyszczenie i standaryzację do
-jednego określonego schematu.
+Analiza rozproszonych danych jest wymagającym wyzwaniem ze względu na różnorodność
+ich struktur i schematów przechowywania. Ponadto, dane często charakteryzują się
+zróżnicowaną jakością oraz dokładnością. Z tych względów głównym celem integracji
+jest:
+
+- zapewnienie użytkownikom scentralizowanego dostępu do informacji,
+- zagwarantowanie spójności danych poprzez czyszczenie i standaryzację według
+określonego schematu.
 
 # Formaty plików
 
