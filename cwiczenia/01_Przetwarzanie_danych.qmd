@@ -43,17 +43,8 @@ tak aby można było z nich efektywnie korzystać. Różne rodzaje struktur dany
 sprawdzają się w różnych zadaniach. Wybór właściwej dla danej sytuacji jest
 kluczową częścią programowania i tworzenia efektywnych algorytmów.
 
-Podział danych ze względu na strukturę:
-
-- Ustrukturyzowane -- dane zorganizowane w ściśle określony sposób (zazwyczaj w
-formie tabeli), np. dane w relacyjnej bazie danych czy arkuszach kalkulacyjnych.
-- Częściowo ustrukturyzowane -- dane posiadające pewną strukturę, jednak nie tak
-precyzyjną jak bazy danych, np. pliki XML czy JSON.
-- Nieustrukturyzowane -- dane nie posiadające dokładnie zdefiniowanego formatu,
-np. dokumenty tekstowe, strony internetowe czy filmy.
-
-W języku R stosowanych jest kilka różnych uporządkowanych struktur danych
-w zależności od ich wymiarowości oraz jednolitości.
+Język R oferuje rozmaite struktury danych, różniące się od siebie liczbą wymiarów
+oraz jednolitością przechowywanych elementów.
 
 | **Struktura danych** | **Liczba wymiarów** | **Czy jednolity typ?** |
 |----------------------|---------------------|------------------------|
