@@ -342,7 +342,7 @@ summarise(grupy,
 
 ## Przetwarzanie potokowe
 
-Przetwarzanie potokowe w kontekście analizy danych odnosi się organizacji
+Przetwarzanie potokowe w kontekście analizy danych odnosi się do organizacji
 przepływu pracy w sposób sekwencyjny. Oznacza to, że dane są przetwarzane przez
 serię etapów (funkcji), w których wynik jednego etapu służy jako wejście do
 kolejnego. Zastosowanie operatora potoku (przepływu) sprawia, że kod jest bardziej
