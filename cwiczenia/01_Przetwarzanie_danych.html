@@ -5351,7 +5351,7 @@ window.Quarto = {
 </tr>
 <tr class="odd">
 <td>Lista</td>
-<td>1</td>
+<td>*</td>
 <td>Nie</td>
 </tr>
 <tr class="even">
@@ -5669,7 +5669,8 @@ $czy_student
 </section>
 <section id="przetwarzanie-potokowe" class="level2">
 <h2 class="anchored" data-anchor-id="przetwarzanie-potokowe">Przetwarzanie potokowe</h2>
-<p>Zastosowanie operatora przepływu sprawia, że kod jest bardziej czytelny, eliminując potrzebę stosowania zmiennych pośrednich i wyraźnie pokazując kolejność wykonywanych operacji.</p>
+<p>Przetwarzanie potokowe w kontekście analizy danych odnosi się organizacji przepływu pracy w sposób sekwencyjny. Oznacza to, że dane są przetwarzane przez serię etapów (funkcji), w których wynik jednego etapu służy jako wejście do kolejnego. Zastosowanie operatora potoku (przepływu) sprawia, że kod jest bardziej czytelny, eliminując potrzebę stosowania zmiennych pośrednich i wyraźnie pokazując kolejność wykonywanych operacji.</p>
+<p>W R od wersji 4.1 wbudowanym operatorem potoku jest <code>|&gt;</code>. Do jego zapisu można wykorzystać skrót klawiszowy <code>CTRL + SHIFT + M</code>, jednak wymaga to zaznaczenia opcji <code>Use native pipe operator</code> (zakładka <code>Code &gt; Editing</code>) w RStudio.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>dane <span class="sc">|&gt;</span></span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(mpg <span class="sc">&gt;</span> <span class="dv">25</span>) <span class="sc">|&gt;</span></span>

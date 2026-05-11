@@ -59,7 +59,7 @@ w zależności od ich wymiarowości oraz jednolitości.
 |----------------------|---------------------|------------------------|
 | Wektor               | 1                   | Tak                    |
 | Czynnik              | 1                   | Tak                    |
-| Lista                | 1                   | Nie                    | 
+| Lista                | *                   | Nie                    | 
 | Macierz              | 2                   | Tak                    | 
 | Ramka danych         | 2                   | Nie                    |
 | Tablica              | $n$                 | Tak                    |
@@ -338,11 +338,20 @@ summarise(grupy,
 
 ## Łączenie tabel
 
+
+
 ## Przetwarzanie potokowe
 
-Zastosowanie operatora przepływu sprawia, że kod jest bardziej czytelny, eliminując
-potrzebę stosowania zmiennych pośrednich i wyraźnie pokazując kolejność wykonywanych
-operacji.
+Przetwarzanie potokowe w kontekście analizy danych odnosi się organizacji
+przepływu pracy w sposób sekwencyjny. Oznacza to, że dane są przetwarzane przez
+serię etapów (funkcji), w których wynik jednego etapu służy jako wejście do
+kolejnego. Zastosowanie operatora potoku (przepływu) sprawia, że kod jest bardziej
+czytelny, eliminując potrzebę stosowania zmiennych pośrednich i wyraźnie
+pokazując kolejność wykonywanych operacji.
+
+W R od wersji 4.1 wbudowanym operatorem potoku jest `|>`. Do jego zapisu można
+wykorzystać skrót klawiszowy `CTRL + SHIFT + M`, jednak wymaga to zaznaczenia
+opcji `Use native pipe operator` (zakładka `Code > Editing`) w RStudio.
 
 ```{r}
 dane |>
